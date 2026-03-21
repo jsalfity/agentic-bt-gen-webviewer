@@ -1,0 +1,82 @@
+{
+  "root": {
+    "type": "sequence",
+    "memory": true,
+    "children": [
+      {
+        "type": "selector",
+        "memory": true,
+        "children": [
+          {
+            "type": "sequence",
+            "memory": true,
+            "children": [
+              {
+                "type": "action",
+                "name": "navigate_table",
+                "action": "navigate",
+                "params": {
+                  "target_location": "table_tabletop"
+                }
+              },
+              {
+                "type": "action",
+                "name": "detect_butter_table",
+                "action": "detect",
+                "params": {
+                  "object": "butter"
+                }
+              },
+              {
+                "type": "action",
+                "name": "pick_butter_table",
+                "action": "pick",
+                "params": {
+                  "object": "butter"
+                }
+              }
+            ]
+          },
+          {
+            "type": "sequence",
+            "memory": true,
+            "children": [
+              {
+                "type": "action",
+                "name": "navigate_fridge",
+                "action": "navigate",
+                "params": {
+                  "target_location": "fridge"
+                }
+              },
+              {
+                "type": "action",
+                "name": "detect_butter_fridge",
+                "action": "detect",
+                "params": {
+                  "object": "butter"
+                }
+              },
+              {
+                "type": "action",
+                "name": "pick_butter_fridge",
+                "action": "pick",
+                "params": {
+                  "object": "butter"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "action",
+        "name": "return_to_dining",
+        "action": "navigate",
+        "params": {
+          "target_location": "dining"
+        }
+      }
+    ]
+  }
+}

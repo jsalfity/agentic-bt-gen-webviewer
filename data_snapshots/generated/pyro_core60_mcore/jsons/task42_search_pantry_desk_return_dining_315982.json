@@ -1,0 +1,82 @@
+{
+  "root": {
+    "type": "sequence",
+    "memory": true,
+    "children": [
+      {
+        "type": "selector",
+        "memory": true,
+        "children": [
+          {
+            "type": "sequence",
+            "memory": true,
+            "children": [
+              {
+                "type": "action",
+                "name": "navigate_pantry",
+                "action": "navigate",
+                "params": {
+                  "target_location": "pantry"
+                }
+              },
+              {
+                "type": "action",
+                "name": "detect_snacks_pantry",
+                "action": "detect",
+                "params": {
+                  "object": "snacks"
+                }
+              },
+              {
+                "type": "action",
+                "name": "pick_snacks_pantry",
+                "action": "pick",
+                "params": {
+                  "object": "snacks"
+                }
+              }
+            ]
+          },
+          {
+            "type": "sequence",
+            "memory": true,
+            "children": [
+              {
+                "type": "action",
+                "name": "navigate_desk",
+                "action": "navigate",
+                "params": {
+                  "target_location": "desk_desktop"
+                }
+              },
+              {
+                "type": "action",
+                "name": "detect_snacks_desk",
+                "action": "detect",
+                "params": {
+                  "object": "snacks"
+                }
+              },
+              {
+                "type": "action",
+                "name": "pick_snacks_desk",
+                "action": "pick",
+                "params": {
+                  "object": "snacks"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "action",
+        "name": "return_to_dining",
+        "action": "navigate",
+        "params": {
+          "target_location": "dining"
+        }
+      }
+    ]
+  }
+}

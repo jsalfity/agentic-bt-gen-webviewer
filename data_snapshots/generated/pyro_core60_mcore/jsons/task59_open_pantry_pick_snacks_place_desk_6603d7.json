@@ -1,0 +1,50 @@
+{
+  "root": {
+    "type": "sequence",
+    "memory": true,
+    "children": [
+      {
+        "type": "action",
+        "name": "navigate_to_pantry",
+        "action": "navigate",
+        "params": {
+          "target_location": "pantry"
+        }
+      },
+      {
+        "type": "action",
+        "name": "open_pantry",
+        "action": "open"
+      },
+      {
+        "type": "action",
+        "name": "detect_snacks",
+        "action": "detect",
+        "params": {
+          "object": "snacks"
+        }
+      },
+      {
+        "type": "action",
+        "name": "pick_snacks",
+        "action": "pick",
+        "params": {
+          "object": "snacks"
+        }
+      },
+      {
+        "type": "action",
+        "name": "navigate_to_desk",
+        "action": "navigate",
+        "params": {
+          "target_location": "desk_desktop"
+        }
+      },
+      {
+        "type": "action",
+        "name": "place_snacks",
+        "action": "place"
+      }
+    ]
+  }
+}

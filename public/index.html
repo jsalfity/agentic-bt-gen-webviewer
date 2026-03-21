@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Robot Behavior Tree Synthesis via Coding Agents: Design, Evaluation, &amp; Discussion</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Project Page</p>
+      <h1>Robot Behavior Tree Synthesis via Coding Agents:<br>Design, Evaluation, &amp; Discussion</h1>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="research-strip">
+      <article class="panel compact-panel">
+        <div class="panel-head">
+          <h2>Abstract</h2>
+          <span class="panel-meta">Placeholder</span>
+        </div>
+        <div class="section-copy">
+          Reserved for the paper abstract. This should become a short research summary that explains the BT generation method, the evaluation setup, and the main empirical takeaway.
+        </div>
+      </article>
+
+      <article class="panel compact-panel">
+        <div class="panel-head">
+          <h2>Method Figure</h2>
+          <span class="panel-meta">Placeholder</span>
+        </div>
+        <div class="figure-placeholder">Method figure or architecture diagram goes here.</div>
+      </article>
+    </section>
+
+    <section class="panel snapshot-strip">
+      <div class="panel-head">
+        <h2>Experiment Snapshot</h2>
+        <span class="panel-meta">Current catalog coverage</span>
+      </div>
+      <div class="hero-stats hero-stats--inline" id="heroStats"></div>
+    </section>
+
+    <section class="section-intro">
+      <p class="eyebrow">Results Explorer</p>
+      <h2>Browse batches, inspect tasks, and review generated trees.</h2>
+      <p class="section-copy section-copy--flush">
+        The controls below filter the current catalog. Selecting a task reveals its prompt, generated BT, symbolic world state, and evaluation outcome.
+      </p>
+    </section>
+
+    <section class="top-banner panel">
+      <section class="top-banner__section">
+        <div class="top-banner__head">
+          <h2>Dataset</h2>
+        </div>
+        <div class="banner-grid banner-grid--dataset">
+          <div>
+            <label for="methodSelect">Method</label>
+            <select id="methodSelect"></select>
+          </div>
+          <div>
+            <label for="suiteSelect">Suite</label>
+            <select id="suiteSelect"></select>
+          </div>
+          <div>
+            <label for="batchSelect">Batch</label>
+            <select id="batchSelect"></select>
+          </div>
+          <div>
+            <label for="taskSelect">Task</label>
+            <select id="taskSelect"></select>
+          </div>
+        </div>
+      </section>
+
+      <section class="top-banner__section">
+        <div class="top-banner__head">
+          <h2>Batch Summary</h2>
+        </div>
+        <div id="batchSummary" class="stack stack--horizontal"></div>
+      </section>
+    </section>
+
+    <section class="content content--full">
+      <section class="content-grid task-bt-grid">
+        <article class="panel intro-card intro-card--compact">
+          <div class="panel-head">
+            <h2>Selected Task</h2>
+            <div id="taskBadgeRow" class="badge-row"></div>
+          </div>
+          <div class="intro-card__body">
+            <div class="intro-card__label">Task Prompt</div>
+            <div id="taskPrompt" class="prompt-card prompt-card--compact">Select a batch and task.</div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h2>Generated BT</h2>
+            <span class="panel-meta">Compact visual layout first, raw JSON second</span>
+          </div>
+          <div class="bt-tree-panel">
+            <div class="bt-tree-wrap">
+              <div id="btTreeView" class="bt-tree-empty">Select a task.</div>
+            </div>
+            <details class="bt-json-wrap">
+              <summary class="compact-pre-title">Generated BT JSON</summary>
+              <pre id="btView" class="pre-compact">{}</pre>
+            </details>
+          </div>
+        </article>
+      </section>
+
+      <section class="content-grid hero-runtime-grid">
+        <article class="panel runtime-panel runtime-panel--featured">
+          <div class="panel-head">
+            <h2>Live Runtime</h2>
+            <span class="panel-meta">Run control and symbolic runtime state</span>
+          </div>
+          <div class="runtime-strip__body">
+            <div class="banner-grid banner-grid--runtime">
+              <div>
+                <label for="controlUrl">sim_app URL</label>
+                <input id="controlUrl" value="http://127.0.0.1:8080">
+              </div>
+              <div>
+                <label for="realtimeFactor">Realtime</label>
+                <input id="realtimeFactor" type="number" min="0.1" step="0.1" value="1">
+              </div>
+              <div class="runtime-strip__actions">
+                <button id="refreshRuntime" class="secondary">Check Runtime</button>
+                <button id="resetWorld" class="secondary">Reset</button>
+                <button id="runBt">Run Selected BT</button>
+              </div>
+            </div>
+            <div class="runtime-strip__status">
+              <div id="runtimeStatus" class="status-block muted">Runtime not checked yet.</div>
+            </div>
+          </div>
+          <div class="runtime-toolbar">
+            <div class="runtime-toolbar-card">
+              <div class="runtime-toolbar-label">Runtime</div>
+              <div id="runtimeStatusInline" class="runtime-toolbar-value">Not checked yet.</div>
+            </div>
+            <div class="runtime-toolbar-card">
+              <div class="runtime-toolbar-label">Run ID</div>
+              <div id="runIdInline" class="runtime-toolbar-value">None</div>
+            </div>
+          </div>
+          <div class="content-grid two-up runtime-split">
+            <div>
+              <h3>BT Status</h3>
+              <pre id="runStatusView">{}</pre>
+            </div>
+            <div>
+              <h3>World State</h3>
+              <p class="section-note">This is the simulator's current symbolic state: robot location, held object, and where known objects are right now.</p>
+              <pre id="worldStateView">{}</pre>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="content-grid two-up">
+        <article class="panel">
+          <div class="panel-head">
+            <h2>Readable Task Spec</h2>
+            <span class="panel-meta">Normalized from the YAML task definition</span>
+          </div>
+          <div class="section-copy">
+            A task spec is the evaluator-side contract for a task. It defines the intended behavior, the structural requirements the BT should satisfy, and the success conditions used after execution to decide whether the run succeeded.
+          </div>
+          <div id="taskSpecView" class="spec-grid"></div>
+          <details class="raw-data-block">
+            <summary class="raw-data-summary">Click to view raw task spec</summary>
+            <pre id="taskSpecRawView">{}</pre>
+          </details>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h2>Evaluation Summary</h2>
+            <span class="panel-meta">Readable interpretation of the batch result row</span>
+          </div>
+          <div id="resultSummaryView" class="result-grid"></div>
+          <details class="raw-data-block">
+            <summary class="raw-data-summary">Click to view raw evaluation row</summary>
+            <pre id="resultView">{}</pre>
+          </details>
+        </article>
+      </section>
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>

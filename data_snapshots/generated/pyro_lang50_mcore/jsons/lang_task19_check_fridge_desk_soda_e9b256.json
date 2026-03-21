@@ -1,0 +1,68 @@
+{
+  "root": {
+    "type": "selector",
+    "memory": true,
+    "children": [
+      {
+        "type": "sequence",
+        "memory": true,
+        "children": [
+          {
+            "type": "action",
+            "name": "navigate_fridge",
+            "action": "navigate",
+            "params": {
+              "target_location": "fridge"
+            }
+          },
+          {
+            "type": "action",
+            "name": "detect_soda_fridge",
+            "action": "detect",
+            "params": {
+              "object": "soda"
+            }
+          },
+          {
+            "type": "action",
+            "name": "pick_soda_fridge",
+            "action": "pick",
+            "params": {
+              "object": "soda"
+            }
+          }
+        ]
+      },
+      {
+        "type": "sequence",
+        "memory": true,
+        "children": [
+          {
+            "type": "action",
+            "name": "navigate_desk",
+            "action": "navigate",
+            "params": {
+              "target_location": "desk_desktop"
+            }
+          },
+          {
+            "type": "action",
+            "name": "detect_soda_desk",
+            "action": "detect",
+            "params": {
+              "object": "soda"
+            }
+          },
+          {
+            "type": "action",
+            "name": "pick_soda_desk",
+            "action": "pick",
+            "params": {
+              "object": "soda"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

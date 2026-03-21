@@ -1,0 +1,65 @@
+Batch: pyro_lang50_mcore
+Suites: pyrobosim_language50
+Environments: pyrobosim
+Tasks: 50
+
+Overall
+  Success rate: 0.9
+  Goal satisfied rate: 0.9
+  Valid rate: 1.0
+  Grounded rate: 1.0
+  Params rate: 1.0
+  Struct comp rate: 0.9
+  Avg tick count: 21.7
+  Avg runtime ms: 2347.0
+
+Execution Status Counts
+  FAILURE: 5
+  SUCCESS: 45
+
+Failure Cause Counts
+  bt_construction: 5
+
+By Archetype
+  pick_and_place
+    count: 10
+    success_rate: 1.0
+    struct_comp_rate: 1.0
+    avg_tick_count: 26.9
+    avg_runtime_ms: 2899.0
+    failure_breakdown: none
+  pick_and_return
+    count: 10
+    success_rate: 0.5
+    struct_comp_rate: 0.5
+    avg_tick_count: 15.9
+    avg_runtime_ms: 1712.9
+    failure_bt_construction: 5
+  search_and_place
+    count: 10
+    success_rate: 1.0
+    struct_comp_rate: 1.0
+    avg_tick_count: 30.3
+    avg_runtime_ms: 3272.8
+    failure_breakdown: none
+  selector_search
+    count: 10
+    success_rate: 1.0
+    struct_comp_rate: 1.0
+    avg_tick_count: 17.4
+    avg_runtime_ms: 1891.7
+    failure_breakdown: none
+  sequential_pick
+    count: 10
+    success_rate: 1.0
+    struct_comp_rate: 1.0
+    avg_tick_count: 18.1
+    avg_runtime_ms: 1958.8
+    failure_breakdown: none
+
+Remaining Failures
+  lang41_task41_search_return_bread | pick_and_return | FAILURE | bt_construction | Search-family BT failed in a detect/fallback branch despite passing static validation.
+  lang42_task42_search_return_snacks | pick_and_return | FAILURE | bt_construction | Search-family BT failed in a detect/fallback branch despite passing static validation.
+  lang43_task43_search_return_soda | pick_and_return | FAILURE | bt_construction | Search-family BT failed in a detect/fallback branch despite passing static validation.
+  lang44_task44_search_return_butter | pick_and_return | FAILURE | bt_construction | Search-family BT failed in a detect/fallback branch despite passing static validation.
+  lang45_task45_search_return_waste | pick_and_return | FAILURE | bt_construction | Search-family BT failed in a detect/fallback branch despite passing static validation.

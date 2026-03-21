@@ -1,0 +1,1065 @@
+---
+suite_name: pyrobosim_core60
+environment: pyrobosim
+world_file: roscon_2024_workshop_world.yaml
+robot_name: robot
+bt_output_dir: generated
+runtime:
+  timeout_s: 60
+  reset_between: true
+  hard_reset_between: false
+tasks:
+- id: task01_hold_bread
+  task_prompt: Go to pantry, detect bread, and pick it up.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - pantry
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: bread
+  archetype: sequential_pick
+- id: task02_hold_snacks
+  task_prompt: Navigate to pantry, detect snacks, and pick it up.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - pantry
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: snacks
+  archetype: sequential_pick
+- id: task03_hold_soda
+  task_prompt: Go to fridge, detect soda, and pick it up.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - fridge
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: soda
+  archetype: sequential_pick
+- id: task04_hold_butter
+  task_prompt: Navigate to fridge, detect butter, and pick it up.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - fridge
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: butter
+  archetype: sequential_pick
+- id: task05_hold_waste_desk
+  task_prompt: Go to desk_desktop, detect waste, and pick it up.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - desk_desktop
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: waste
+  archetype: sequential_pick
+- id: task06_hold_waste_bin
+  task_prompt: Navigate to bin_disposal, detect waste, and pick it up.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - bin_disposal
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: waste
+  archetype: sequential_pick
+- id: task07_hold_bread_return_dining
+  task_prompt: Go to pantry, detect bread, pick it up, then return to dining.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - pantry
+      - dining
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: bread
+    robot_at: dining
+  archetype: sequential_pick
+- id: task08_hold_soda_return_office
+  task_prompt: Go to fridge, detect soda, pick it up, then go to office.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - fridge
+      - office
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: soda
+    robot_at: office
+  archetype: sequential_pick
+- id: task09_hold_snacks_return_kitchen
+  task_prompt: Go to pantry, detect snacks, pick it up, then go to kitchen.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - pantry
+      - kitchen
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: snacks
+    robot_at: kitchen
+  archetype: sequential_pick
+- id: task10_hold_butter_return_closet
+  task_prompt: Go to fridge, detect butter, pick it up, then go to closet.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - fridge
+      - closet
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: butter
+    robot_at: closet
+  archetype: sequential_pick
+- id: task11_search_bread_pantry_fridge
+  task_prompt: Search pantry, then fridge for bread. If found, pick it up.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - pantry
+      - fridge
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: bread
+  archetype: selector_search
+- id: task12_search_bread_fridge_pantry
+  task_prompt: Search fridge, then pantry for bread. If found, pick it up.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - fridge
+      - pantry
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: bread
+  archetype: selector_search
+- id: task13_search_snacks_pantry_fridge
+  task_prompt: Search pantry, then fridge for snacks. If found, pick it up.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - pantry
+      - fridge
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: snacks
+  archetype: selector_search
+- id: task14_search_soda_fridge_pantry
+  task_prompt: Search fridge, then pantry for soda. If found, pick it up.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - fridge
+      - pantry
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: soda
+  archetype: selector_search
+- id: task15_search_butter_fridge_pantry
+  task_prompt: Search fridge, then pantry for butter. If found, pick it up.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - fridge
+      - pantry
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: butter
+  archetype: selector_search
+- id: task16_search_waste_desk_bin
+  task_prompt: Search desk_desktop, then bin_disposal for waste. If found, pick it up.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - desk_desktop
+      - bin_disposal
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: waste
+  archetype: selector_search
+- id: task17_search_waste_bin_desk
+  task_prompt: Search bin_disposal, then desk_desktop for waste. If found, pick it up.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - bin_disposal
+      - desk_desktop
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: waste
+  archetype: selector_search
+- id: task18_search_snacks_pantry_desk
+  task_prompt: Search pantry, then desk_desktop for snacks. If found, pick it up.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - pantry
+      - desk_desktop
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: snacks
+  archetype: selector_search
+- id: task19_search_soda_fridge_desk
+  task_prompt: Search fridge, then desk_desktop for soda. If found, pick it up.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - fridge
+      - desk_desktop
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: soda
+  archetype: selector_search
+- id: task20_search_bread_pantry_table
+  task_prompt: Search pantry, then table_tabletop for bread. If found, pick it up.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - pantry
+      - table_tabletop
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: bread
+  archetype: selector_search
+- id: task21_place_bread_table
+  task_prompt: Pick bread from pantry and place it on table_tabletop.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      - place
+      locations:
+      - pantry
+      - table_tabletop
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: bread
+      location: table_tabletop
+  archetype: pick_and_place
+- id: task22_place_snacks_table
+  task_prompt: Pick snacks from pantry and place it on table_tabletop.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      - place
+      locations:
+      - pantry
+      - table_tabletop
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: snacks
+      location: table_tabletop
+  archetype: pick_and_place
+- id: task23_place_soda_pantry
+  task_prompt: Pick soda from fridge and place it at pantry.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      - place
+      locations:
+      - fridge
+      - pantry
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: soda
+      location: pantry
+  archetype: pick_and_place
+- id: task24_place_butter_desk
+  task_prompt: Pick butter from fridge and place it on desk_desktop.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      - place
+      locations:
+      - fridge
+      - desk_desktop
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: butter
+      location: desk_desktop
+  archetype: pick_and_place
+- id: task25_place_bread_fridge
+  task_prompt: Pick bread from pantry and place it at fridge.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      - place
+      locations:
+      - pantry
+      - fridge
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: bread
+      location: fridge
+  archetype: pick_and_place
+- id: task26_place_snacks_desk
+  task_prompt: Pick snacks from pantry and place it on desk_desktop.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      - place
+      locations:
+      - pantry
+      - desk_desktop
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: snacks
+      location: desk_desktop
+  archetype: pick_and_place
+- id: task27_place_soda_table
+  task_prompt: Pick soda from fridge and place it on table_tabletop.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      - place
+      locations:
+      - fridge
+      - table_tabletop
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: soda
+      location: table_tabletop
+  archetype: pick_and_place
+- id: task28_place_butter_pantry
+  task_prompt: Pick butter from fridge and place it at pantry.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      - place
+      locations:
+      - fridge
+      - pantry
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: butter
+      location: pantry
+  archetype: pick_and_place
+- id: task29_place_waste_dumpster
+  task_prompt: Pick waste from desk_desktop and place it at dumpster_disposal.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      - place
+      locations:
+      - desk_desktop
+      - dumpster_disposal
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: waste
+      location: dumpster_disposal
+  archetype: pick_and_place
+- id: task30_place_waste_dumpster_from_bin
+  task_prompt: Pick waste from bin_disposal and place it at dumpster_disposal.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      - place
+      locations:
+      - bin_disposal
+      - dumpster_disposal
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: waste
+      location: dumpster_disposal
+  archetype: pick_and_place
+- id: task31_search_place_bread_table
+  task_prompt: Search pantry, then fridge for bread. If found, place it on table_tabletop.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      - place
+      locations:
+      - pantry
+      - fridge
+      - table_tabletop
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: bread
+      location: table_tabletop
+  archetype: search_and_place
+- id: task32_search_place_bread_table_rev
+  task_prompt: Search fridge, then pantry for bread. If found, place it on table_tabletop.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      - place
+      locations:
+      - fridge
+      - pantry
+      - table_tabletop
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: bread
+      location: table_tabletop
+  archetype: search_and_place
+- id: task33_search_place_snacks_table
+  task_prompt: Search pantry, then desk_desktop for snacks. If found, place it on table_tabletop.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      - place
+      locations:
+      - pantry
+      - desk_desktop
+      - table_tabletop
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: snacks
+      location: table_tabletop
+  archetype: search_and_place
+- id: task34_search_place_soda_pantry
+  task_prompt: Search fridge, then pantry for soda. If found, place it at pantry.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      - place
+      locations:
+      - fridge
+      - pantry
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: soda
+      location: pantry
+  archetype: search_and_place
+- id: task35_search_place_butter_desk
+  task_prompt: Search fridge, then pantry for butter. If found, place it on desk_desktop.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      - place
+      locations:
+      - fridge
+      - pantry
+      - desk_desktop
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: butter
+      location: desk_desktop
+  archetype: search_and_place
+- id: task36_search_place_soda_table
+  task_prompt: Search fridge, then pantry for soda. If found, place it on table_tabletop.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      - place
+      locations:
+      - fridge
+      - pantry
+      - table_tabletop
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: soda
+      location: table_tabletop
+  archetype: search_and_place
+- id: task37_search_place_bread_desk
+  task_prompt: Search pantry, then desk_desktop for bread. If found, place it on desk_desktop.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      - place
+      locations:
+      - pantry
+      - desk_desktop
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: bread
+      location: desk_desktop
+  archetype: search_and_place
+- id: task38_search_place_snacks_desk
+  task_prompt: Search pantry, then fridge for snacks. If found, place it on desk_desktop.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      - place
+      locations:
+      - pantry
+      - fridge
+      - desk_desktop
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: snacks
+      location: desk_desktop
+  archetype: search_and_place
+- id: task39_search_place_waste_dumpster
+  task_prompt: Search desk_desktop, then bin_disposal for waste. If found, place it at dumpster_disposal.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      - place
+      locations:
+      - desk_desktop
+      - bin_disposal
+      - dumpster_disposal
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: waste
+      location: dumpster_disposal
+  archetype: search_and_place
+- id: task40_search_place_waste_dumpster_rev
+  task_prompt: Search bin_disposal, then desk_desktop for waste. If found, place it at dumpster_disposal.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      - place
+      locations:
+      - bin_disposal
+      - desk_desktop
+      - dumpster_disposal
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: waste
+      location: dumpster_disposal
+  archetype: search_and_place
+- id: task41_search_return_bread
+  task_prompt: Search pantry, then fridge for bread. If found, pick it up and return to dining.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - pantry
+      - fridge
+      - dining
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: bread
+    robot_at: dining
+  archetype: pick_and_return
+- id: task42_search_return_snacks
+  task_prompt: Search pantry, then desk_desktop for snacks. If found, pick it up and return to dining.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - pantry
+      - desk_desktop
+      - dining
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: snacks
+    robot_at: dining
+  archetype: pick_and_return
+- id: task43_search_return_soda
+  task_prompt: Search fridge, then pantry for soda. If found, pick it up and return to dining.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - fridge
+      - pantry
+      - dining
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: soda
+    robot_at: dining
+  archetype: pick_and_return
+- id: task44_search_return_butter
+  task_prompt: Search fridge, then pantry for butter. If found, pick it up and return to dining.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - fridge
+      - pantry
+      - dining
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: butter
+    robot_at: dining
+  archetype: pick_and_return
+- id: task45_search_return_waste
+  task_prompt: Search desk_desktop, then bin_disposal for waste. If found, pick it up and return to dining.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - desk_desktop
+      - bin_disposal
+      - dining
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: waste
+    robot_at: dining
+  archetype: pick_and_return
+- id: task46_search_return_bread_table
+  task_prompt: Search table_tabletop, then pantry for bread. If found, pick it up and return to dining.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - table_tabletop
+      - pantry
+      - dining
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: bread
+    robot_at: dining
+  archetype: pick_and_return
+- id: task47_search_return_snacks_table
+  task_prompt: Search table_tabletop, then pantry for snacks. If found, pick it up and return to dining.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - table_tabletop
+      - pantry
+      - dining
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: snacks
+    robot_at: dining
+  archetype: pick_and_return
+- id: task48_search_return_soda_table
+  task_prompt: Search table_tabletop, then fridge for soda. If found, pick it up and return to dining.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - table_tabletop
+      - fridge
+      - dining
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: soda
+    robot_at: dining
+  archetype: pick_and_return
+- id: task49_search_return_butter_table
+  task_prompt: Search table_tabletop, then fridge for butter. If found, pick it up and return to dining.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - table_tabletop
+      - fridge
+      - dining
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: butter
+    robot_at: dining
+  archetype: pick_and_return
+- id: task50_search_return_waste_bin
+  task_prompt: Search bin_disposal, then desk_desktop for waste. If found, pick it up and return to dining.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - bin_disposal
+      - desk_desktop
+      - dining
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: waste
+    robot_at: dining
+  archetype: pick_and_return
+- id: task51_search_bread_table_pantry_fridge
+  task_prompt: Search table_tabletop, then pantry, then fridge for bread. If found, pick it up.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - table_tabletop
+      - pantry
+      - fridge
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: bread
+  archetype: selector_search
+- id: task52_search_soda_desk_fridge_pantry
+  task_prompt: Search desk_desktop, then fridge, then pantry for soda. If found, pick it up.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - desk_desktop
+      - fridge
+      - pantry
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: soda
+  archetype: selector_search
+- id: task53_search_place_bread_table_pantry_fridge_desk
+  task_prompt: Search table_tabletop, then pantry, then fridge for bread. If found, place it on desk_desktop.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      - place
+      locations:
+      - table_tabletop
+      - pantry
+      - fridge
+      - desk_desktop
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: bread
+      location: desk_desktop
+  archetype: search_and_place
+- id: task54_search_place_soda_desk_fridge_pantry_table
+  task_prompt: Search desk_desktop, then fridge, then pantry for soda. If found, place it on table_tabletop.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      - place
+      locations:
+      - desk_desktop
+      - fridge
+      - pantry
+      - table_tabletop
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: soda
+      location: table_tabletop
+  archetype: search_and_place
+- id: task55_search_return_bread_table_pantry_fridge_office
+  task_prompt: Search table_tabletop, then pantry, then fridge for bread. If found, pick it up and return to office.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - table_tabletop
+      - pantry
+      - fridge
+      - office
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: bread
+    robot_at: office
+  archetype: pick_and_return
+- id: task56_search_return_waste_table_bin_desk_closet
+  task_prompt: Search table_tabletop, then bin_disposal, then desk_desktop for waste. If found, pick it up and return to closet.
+  required:
+    static:
+      actions:
+      - navigate
+      - detect
+      - pick
+      locations:
+      - table_tabletop
+      - bin_disposal
+      - desk_desktop
+      - closet
+      must_use_selector: true
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: waste
+    robot_at: closet
+  archetype: pick_and_return
+- id: task57_open_pantry_pick_bread_return_dining
+  task_prompt: Go to pantry, open it, detect bread, pick it up, and return to dining.
+  required:
+    static:
+      actions:
+      - navigate
+      - open
+      - detect
+      - pick
+      locations:
+      - pantry
+      - dining
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: bread
+    robot_at: dining
+  archetype: sequential_pick
+- id: task58_open_fridge_pick_soda_return_office
+  task_prompt: Go to fridge, open it, detect soda, pick it up, and return to office.
+  required:
+    static:
+      actions:
+      - navigate
+      - open
+      - detect
+      - pick
+      locations:
+      - fridge
+      - office
+      must_use_memory_sequence: true
+  success:
+    must_hold_category: soda
+    robot_at: office
+  archetype: sequential_pick
+- id: task59_open_pantry_pick_snacks_place_desk_release
+  task_prompt: Go to pantry, open it, detect snacks, pick them up, place them on desk_desktop, and finish empty-handed.
+  required:
+    static:
+      actions:
+      - navigate
+      - open
+      - detect
+      - pick
+      - place
+      locations:
+      - pantry
+      - desk_desktop
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: snacks
+      location: desk_desktop
+    not_holding: true
+  archetype: pick_and_place
+- id: task60_open_fridge_pick_butter_place_table_release
+  task_prompt: Go to fridge, open it, detect butter, pick it up, place it on table_tabletop, and finish empty-handed.
+  required:
+    static:
+      actions:
+      - navigate
+      - open
+      - detect
+      - pick
+      - place
+      locations:
+      - fridge
+      - table_tabletop
+      must_use_memory_sequence: true
+  success:
+    must_place_category_at:
+      category: butter
+      location: table_tabletop
+    not_holding: true
+  archetype: pick_and_place

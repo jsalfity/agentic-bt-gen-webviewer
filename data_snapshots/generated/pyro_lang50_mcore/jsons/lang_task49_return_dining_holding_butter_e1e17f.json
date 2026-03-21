@@ -1,0 +1,32 @@
+{
+  "root": {
+    "type": "sequence",
+    "memory": true,
+    "children": [
+      {
+        "type": "action",
+        "name": "detect_butter",
+        "action": "detect",
+        "params": {
+          "object": "butter"
+        }
+      },
+      {
+        "type": "action",
+        "name": "pick_butter",
+        "action": "pick",
+        "params": {
+          "object": "butter"
+        }
+      },
+      {
+        "type": "action",
+        "name": "return_to_dining",
+        "action": "navigate",
+        "params": {
+          "target_location": "dining"
+        }
+      }
+    ]
+  }
+}

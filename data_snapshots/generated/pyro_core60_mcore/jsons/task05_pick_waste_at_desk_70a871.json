@@ -1,0 +1,32 @@
+{
+  "root": {
+    "type": "sequence",
+    "memory": true,
+    "children": [
+      {
+        "type": "action",
+        "name": "navigate_to_desk_desktop",
+        "action": "navigate",
+        "params": {
+          "target_location": "desk_desktop"
+        }
+      },
+      {
+        "type": "action",
+        "name": "detect_waste",
+        "action": "detect",
+        "params": {
+          "object": "waste"
+        }
+      },
+      {
+        "type": "action",
+        "name": "pick_waste",
+        "action": "pick",
+        "params": {
+          "object": "waste"
+        }
+      }
+    ]
+  }
+}
