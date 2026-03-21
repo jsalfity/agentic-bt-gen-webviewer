@@ -18,7 +18,8 @@ const els = {
   methodSelect: document.getElementById('methodSelect'),
   suiteSelect: document.getElementById('suiteSelect'),
   batchSelect: document.getElementById('batchSelect'),
-  taskSelect: document.getElementById('taskSelect'),
+  taskList: document.getElementById('taskList'),
+  taskListMeta: document.getElementById('taskListMeta'),
   controlUrl: document.getElementById('controlUrl'),
   realtimeFactor: document.getElementById('realtimeFactor'),
   refreshRuntime: document.getElementById('refreshRuntime'),
@@ -153,6 +154,10 @@ function currentTaskRecord() {
   return tasks.find((task) => task.id === state.currentTask) || null;
 }
 
+function tasksForCurrentBatch() {
+  return state.catalog.tasks_by_batch?.[state.currentBatch] || [];
+}
+
 function renderHeroStats() {
   const totalTasks = Object.values(state.catalog.tasks_by_batch || {}).reduce((sum, tasks) => sum + tasks.length, 0);
   const successRates = state.batches.map((batch) => batch.summary?.success_rate).filter((value) => typeof value === 'number');
@@ -198,18 +203,50 @@ function renderSelectors() {
     state.currentBatch = batchOptions[0].value;
   }
   setOptions(els.batchSelect, batchOptions, state.currentBatch);
+  const tasks = tasksForCurrentBatch();
+  if (!tasks.some((task) => task.id === state.currentTask)) {
+    state.currentTask = tasks[0]?.id || null;
+  }
+}
 
-  const taskOptions = (state.catalog.tasks_by_batch?.[state.currentBatch] || []).map((task) => ({
-    value: task.id,
-    label: `${task.id}  [${task.archetype_label}]`,
-  }));
-  if (!taskOptions.length) {
-    taskOptions.push({ value: '', label: 'No task available' });
+function renderTaskList() {
+  const tasks = tasksForCurrentBatch();
+  els.taskListMeta.textContent = tasks.length
+    ? `${tasks.length} prompts in ${state.currentBatch}`
+    : 'No prompts available for the current filters.';
+
+  if (!tasks.length) {
+    els.taskList.innerHTML = '<div class="task-list-empty">No task prompts available.</div>';
+    return;
   }
-  if (!taskOptions.some((option) => option.value === state.currentTask)) {
-    state.currentTask = taskOptions[0].value;
-  }
-  setOptions(els.taskSelect, taskOptions, state.currentTask);
+
+  els.taskList.innerHTML = tasks.map((task, index) => {
+    const selected = task.id === state.currentTask;
+    const execTone = task.exec_status === 'SUCCESS'
+      ? 'good'
+      : (task.exec_status === 'FAILURE' ? 'bad' : 'warn');
+    const goalTone = task.success ? 'good' : 'bad';
+    return `
+      <button
+        type="button"
+        class="task-list-item${selected ? ' is-selected' : ''}"
+        data-task-id="${escapeHtml(task.id)}"
+        role="option"
+        aria-selected="${selected ? 'true' : 'false'}"
+      >
+        <span class="task-list-item__index">${index + 1}</span>
+        <span class="task-list-item__body">
+          <span class="task-list-item__prompt">${escapeHtml(task.prompt || task.id)}</span>
+          <span class="task-list-item__tags">
+            <span class="badge">${escapeHtml(task.archetype_label || 'Unknown')}</span>
+            <span class="badge ${execTone}">Execution: ${escapeHtml(task.exec_status || 'Unknown')}</span>
+            <span class="badge ${goalTone}">${task.success ? 'Goal Met' : 'Goal Missed'}</span>
+          </span>
+          <span class="task-list-item__meta">${escapeHtml(task.id)}</span>
+        </span>
+      </button>
+    `;
+  }).join('');
 }
 
 function renderBatchSummary() {
@@ -422,6 +459,7 @@ async function loadCatalog() {
   renderHeroStats();
   renderSelectors();
   renderBatchSummary();
+  renderTaskList();
   renderTask();
   setRuntimeButtonsEnabled(false);
   els.runIdInline.textContent = 'None';
@@ -433,6 +471,7 @@ els.methodSelect.addEventListener('change', () => {
   state.currentTask = null;
   renderSelectors();
   renderBatchSummary();
+  renderTaskList();
   renderTask();
 });
 
@@ -442,6 +481,7 @@ els.suiteSelect.addEventListener('change', () => {
   state.currentTask = null;
   renderSelectors();
   renderBatchSummary();
+  renderTaskList();
   renderTask();
 });
 
@@ -450,11 +490,15 @@ els.batchSelect.addEventListener('change', () => {
   state.currentTask = null;
   renderSelectors();
   renderBatchSummary();
+  renderTaskList();
   renderTask();
 });
 
-els.taskSelect.addEventListener('change', () => {
-  state.currentTask = els.taskSelect.value;
+els.taskList.addEventListener('click', (event) => {
+  const button = event.target.closest('[data-task-id]');
+  if (!button) return;
+  state.currentTask = button.getAttribute('data-task-id');
+  renderTaskList();
   renderTask();
 });
 

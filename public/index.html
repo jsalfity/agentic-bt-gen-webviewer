@@ -69,10 +69,6 @@
             <label for="batchSelect">Batch</label>
             <select id="batchSelect"></select>
           </div>
-          <div>
-            <label for="taskSelect">Task</label>
-            <select id="taskSelect"></select>
-          </div>
         </div>
       </section>
 
@@ -82,6 +78,14 @@
         </div>
         <div id="batchSummary" class="stack stack--horizontal"></div>
       </section>
+    </section>
+
+    <section class="panel task-picker-panel">
+      <div class="panel-head">
+        <h2>Select a Task Prompt</h2>
+        <span id="taskListMeta" class="panel-meta">Choose one prompt from the current batch.</span>
+      </div>
+      <div id="taskList" class="task-list" role="listbox" aria-label="Task prompts"></div>
     </section>
 
     <section class="content content--full">
