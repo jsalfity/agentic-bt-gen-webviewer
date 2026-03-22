@@ -1,0 +1,88 @@
+{
+  "root": {
+    "type": "selector",
+    "memory": true,
+    "children": [
+      {
+        "type": "sequence",
+        "memory": true,
+        "children": [
+          {
+            "type": "action",
+            "name": "navigate_to_desk",
+            "action": "navigate",
+            "params": {
+              "target_location": "desk"
+            }
+          },
+          {
+            "type": "action",
+            "name": "detect_waste",
+            "action": "detect",
+            "params": {
+              "object": "waste"
+            },
+            "outputs": {
+              "detected_objects": "detected_objects"
+            }
+          },
+          {
+            "type": "condition",
+            "name": "check_waste_detected",
+            "key": "detected_objects",
+            "operator": "contains",
+            "value": "waste"
+          },
+          {
+            "type": "action",
+            "name": "pick_waste",
+            "action": "pick",
+            "params": {
+              "object": "waste"
+            }
+          }
+        ]
+      },
+      {
+        "type": "sequence",
+        "memory": true,
+        "children": [
+          {
+            "type": "action",
+            "name": "navigate_to_bin",
+            "action": "navigate",
+            "params": {
+              "target_location": "bin"
+            }
+          },
+          {
+            "type": "action",
+            "name": "detect_waste",
+            "action": "detect",
+            "params": {
+              "object": "waste"
+            },
+            "outputs": {
+              "detected_objects": "detected_objects"
+            }
+          },
+          {
+            "type": "condition",
+            "name": "check_waste_detected",
+            "key": "detected_objects",
+            "operator": "contains",
+            "value": "waste"
+          },
+          {
+            "type": "action",
+            "name": "pick_waste",
+            "action": "pick",
+            "params": {
+              "object": "waste"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

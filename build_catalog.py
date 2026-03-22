@@ -18,6 +18,9 @@ DATA_ROOT = APP_ROOT / "data_snapshots"
 GENERATED_ROOT = DATA_ROOT / "generated"
 TASK_SPEC_ROOT = DATA_ROOT / "task_specs"
 OUTPUT_PATH = APP_ROOT / "public" / "data" / "catalog.json"
+PAPER_ROOT = APP_ROOT.parent / "agentic-bt-gen-paper"
+PAPER_TABLE_ROOT = PAPER_ROOT / "tables"
+ROOTSTOCKS_PATH = APP_ROOT.parent / "pyrobosim" / "pyrobosim" / "pyrobosim" / "mcp" / "data" / "rootstocks.yaml"
 
 METHOD_ORDER = {"M-Core": 0, "B1": 1, "B0": 2, "Other": 3}
 SUITE_LABELS = {
@@ -32,11 +35,144 @@ ARCHETYPE_LABELS = {
     "pick_and_return": "Pick and Return",
 }
 
+PAPER_TABLE_SPECS = [
+    {
+        "key": "main_comparison",
+        "path": PAPER_TABLE_ROOT / "main_comparison.tex",
+        "title": "Main PyRoboSim Comparison",
+        "columns": ["Method", "Suite", "Valid", "Grounded", "Params", "StructComp", "Success"],
+    },
+    {
+        "key": "pyrobosim_archetypes",
+        "path": PAPER_TABLE_ROOT / "pyrobosim_archetypes.tex",
+        "title": "PyRoboSim Success Rates by Archetype",
+        "columns": ["Archetype", "Example prompt", "B0", "B1", "M-Core"],
+    },
+    {
+        "key": "language_breakdown",
+        "path": PAPER_TABLE_ROOT / "language_breakdown.tex",
+        "title": "Language Robustness Breakdown",
+        "columns": ["Variation type", "Example prompt", "B0", "B1", "M-Core"],
+    },
+    {
+        "key": "failure_breakdown",
+        "path": PAPER_TABLE_ROOT / "failure_breakdown.tex",
+        "title": "Failure-Cause Breakdown",
+        "columns": ["Method", "Suite", "BT construction", "Evaluator mismatch", "Runtime failure"],
+    },
+    {
+        "key": "model_robustness",
+        "path": PAPER_TABLE_ROOT / "model_robustness.tex",
+        "title": "Compact Cross-Model Robustness Check",
+        "columns": ["Model", "Method(s)", "Success", "StructComp", "Grounding"],
+    },
+    {
+        "key": "run_matrix",
+        "path": PAPER_TABLE_ROOT / "run_matrix.tex",
+        "title": "Experimental Matrix",
+        "columns": ["Track", "Suites", "Methods", "Purpose"],
+    },
+]
+
 
 def load_json(path: Path, default: Any) -> Any:
     if not path.exists():
         return default
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def strip_tex(value: str) -> str:
+    text = value.strip()
+    text = re.sub(r"%.*", "", text)
+    text = text.replace(r"\_", "_").replace(r"\&", "&")
+    text = text.replace("``", '"').replace("''", '"')
+    text = re.sub(r"\\redtext\{([^{}]*)\}", r"\1", text)
+    text = re.sub(r"\\textbf\{([^{}]*)\}", r"\1", text)
+    text = re.sub(r"\\textit\{([^{}]*)\}", r"\1", text)
+    text = re.sub(r"\\shortstack(?:\[[^\]]+\])?\{([^{}]*)\}", lambda m: m.group(1).replace(r"\\", " "), text)
+    text = re.sub(r"\\multicolumn\{[^{}]*\}\{[^{}]*\}\{([^{}]*)\}", r"\1", text)
+    text = re.sub(r"\\[a-zA-Z]+\{([^{}]*)\}", r"\1", text)
+    text = re.sub(r"\\[a-zA-Z]+", "", text)
+    text = text.replace("{", "").replace("}", "")
+    text = text.replace(r"\\", " ")
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
+
+
+def parse_tex_table_rows(path: Path, column_count: int) -> tuple[str, str | None, list[list[str]]]:
+    if not path.exists():
+        return "", None, []
+    text = path.read_text(encoding="utf-8")
+    caption_match = re.search(r"\\caption\{([^{}]*)\}", text)
+    label_match = re.search(r"\\label\{([^{}]*)\}", text)
+    caption = strip_tex(caption_match.group(1)) if caption_match else path.stem
+    label = label_match.group(1) if label_match else None
+
+    tabular_match = re.search(r"\\begin\{tabular\}\{.*?\}(.*?)\\end\{tabular\}", text, re.S)
+    if not tabular_match:
+        return caption, label, []
+    body = tabular_match.group(1)
+    body = re.sub(r"\\hline|\\cline\{[^{}]*\}", "", body)
+
+    rows: list[list[str]] = []
+    for raw_row in body.split(r"\\"):
+        row = raw_row.strip()
+        if not row:
+            continue
+        cells = [strip_tex(cell) for cell in row.split("&")]
+        if len(cells) < column_count:
+            continue
+        cells = cells[-column_count:]
+        if not any(cells):
+            continue
+        rows.append(cells)
+    return caption, label, rows
+
+
+def load_paper_tables() -> list[dict[str, Any]]:
+    tables: list[dict[str, Any]] = []
+    for spec in PAPER_TABLE_SPECS:
+        caption, label, rows = parse_tex_table_rows(spec["path"], len(spec["columns"]))
+        tables.append(
+            {
+                "key": spec["key"],
+                "title": spec["title"],
+                "caption": caption or spec["title"],
+                "label": label,
+                "columns": list(spec["columns"]),
+                "rows": rows,
+                "incomplete": any(cell == "TBD" for row in rows for cell in row),
+            }
+        )
+    return tables
+
+
+def load_rootstocks() -> list[dict[str, Any]]:
+    if not ROOTSTOCKS_PATH.exists():
+        return []
+    data = load_yaml_file(ROOTSTOCKS_PATH)
+    rootstocks = data.get("rootstocks", []) if isinstance(data, dict) else []
+    items: list[dict[str, Any]] = []
+    for rootstock in rootstocks:
+        if not isinstance(rootstock, dict) or not rootstock.get("name"):
+            continue
+        slots = rootstock.get("slots") if isinstance(rootstock.get("slots"), dict) else {}
+        template_root = ((rootstock.get("template") or {}).get("root") or {}) if isinstance(rootstock.get("template"), dict) else {}
+        template = rootstock.get("template") if isinstance(rootstock.get("template"), dict) else None
+        items.append(
+            {
+                "name": str(rootstock.get("name")),
+                "description": str(rootstock.get("description") or ""),
+                "when_to_use": str(rootstock.get("when_to_use") or ""),
+                "anti_pattern": str(rootstock.get("anti_pattern") or ""),
+                "slots": [{"name": str(key), "description": str(value)} for key, value in slots.items()],
+                "template_root_type": str(template_root.get("type") or ""),
+                "template_memory": template_root.get("memory"),
+                "template": template,
+                "bt_svg": render_bt_svg(template),
+            }
+        )
+    return items
 
 
 def parse_scalar(value: str) -> Any:
@@ -409,6 +545,12 @@ def summarize_task_spec(task: dict[str, Any], suite_meta: dict[str, Any]) -> dic
         success_conditions.append(f"Robot must be holding `{success['must_hold_category']}`")
     if success.get("robot_at"):
         success_conditions.append(f"Robot must finish at `{success['robot_at']}`")
+    if isinstance(success.get("must_place_category_at"), dict):
+        place_rule = success.get("must_place_category_at") or {}
+        category = place_rule.get("category")
+        location = place_rule.get("location")
+        if category and location:
+            success_conditions.append(f"`{category}` must be placed at `{location}`")
     if success.get("category_at_location"):
         for category, location in (success.get("category_at_location") or {}).items():
             success_conditions.append(f"`{category}` must end at `{location}`")
@@ -528,6 +670,8 @@ def build_batch(batch_dir: Path, suites: dict[str, dict[str, Any]]) -> tuple[dic
 
 def build_catalog() -> dict[str, Any]:
     suites = load_suites()
+    paper_tables = load_paper_tables()
+    rootstocks = load_rootstocks()
     batches: list[dict[str, Any]] = []
     tasks_by_batch: dict[str, list[dict[str, Any]]] = {}
 
@@ -560,6 +704,8 @@ def build_catalog() -> dict[str, Any]:
         },
         "methods": ["M-Core", "B1", "B0", "Other"],
         "suites": suite_index,
+        "paper_tables": paper_tables,
+        "rootstocks": rootstocks,
         "batches": batches,
         "tasks_by_batch": tasks_by_batch,
     }

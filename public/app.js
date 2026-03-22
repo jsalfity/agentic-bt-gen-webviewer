@@ -20,6 +20,11 @@ const els = {
   batchSelect: document.getElementById('batchSelect'),
   taskList: document.getElementById('taskList'),
   taskListMeta: document.getElementById('taskListMeta'),
+  batchCompareMeta: document.getElementById('batchCompareMeta'),
+  batchCompareLegend: document.getElementById('batchCompareLegend'),
+  batchCompareChart: document.getElementById('batchCompareChart'),
+  rootstocksPanel: document.getElementById('rootstocksPanel'),
+  rootstocksView: document.getElementById('rootstocksView'),
   controlUrl: document.getElementById('controlUrl'),
   realtimeFactor: document.getElementById('realtimeFactor'),
   refreshRuntime: document.getElementById('refreshRuntime'),
@@ -48,6 +53,11 @@ function pretty(value) {
 function formatRate(value) {
   if (typeof value !== 'number') return 'n/a';
   return `${Math.round(value * 100)}%`;
+}
+
+function formatNumber(value) {
+  if (typeof value !== 'number' || Number.isNaN(value)) return 'n/a';
+  return value.toLocaleString();
 }
 
 function setOptions(select, items, selectedValue) {
@@ -88,12 +98,24 @@ function selectedRobotName() {
   return normalizeRobotName(document.getElementById('robotName')?.value);
 }
 
-function tile(label, value) {
-  return `<div class="stat-tile"><div class="stat-k">${label}</div><div class="stat-v">${value}</div></div>`;
+function tile(label, value, description = '') {
+  return `
+    <div class="stat-tile">
+      <div class="stat-k">${label}${description ? ` <span class="stat-desc">${description}</span>` : ''}</div>
+      <div class="stat-v">${value}</div>
+    </div>
+  `;
 }
 
 function badge(label, tone = '') {
   return `<span class="badge ${tone}">${label}</span>`;
+}
+
+function methodColor(method) {
+  if (method === 'M-Core') return '#0b6e4f';
+  if (method === 'B1') return '#b6502d';
+  if (method === 'B0') return '#5a6472';
+  return '#8a8378';
 }
 
 function humanizeValue(value) {
@@ -211,8 +233,9 @@ function renderSelectors() {
 
 function renderTaskList() {
   const tasks = tasksForCurrentBatch();
-  els.taskListMeta.textContent = tasks.length
-    ? `${tasks.length} prompts in ${state.currentBatch}`
+  const batch = currentBatchRecord();
+  els.taskListMeta.textContent = tasks.length && batch
+    ? `Method ${batch.method} · ${batch.suite_label} suite · ${tasks.length} prompts`
     : 'No prompts available for the current filters.';
 
   if (!tasks.length) {
@@ -253,36 +276,197 @@ function renderBatchSummary() {
   const batch = currentBatchRecord();
   if (!batch) {
     els.batchSummary.innerHTML = '<div class="status-block muted">No batch selected.</div>';
+    els.batchCompareLegend.innerHTML = '';
+    els.batchCompareChart.innerHTML = '<div class="status-block muted">No comparison available.</div>';
+    els.batchCompareMeta.textContent = 'Grouped comparison across evaluation metrics.';
     return;
   }
 
   const summary = batch.summary || {};
-  const rows = [
-    tile('Method', batch.method),
-    tile('Suite', batch.suite_label),
-    tile('Tasks', summary.count ?? batch.count ?? 'n/a'),
-    tile('Success', formatRate(summary.success_rate)),
-    tile('Structure', formatRate(summary.struct_comp_rate)),
-    tile('Grounded', formatRate(summary.grounded_rate)),
+  els.batchSummary.innerHTML = `
+    <div class="batch-summary-meta">
+      ${tile('Method', batch.method, 'synthesis condition used')}
+      ${tile('Suite', batch.suite_label, 'benchmark under evaluation')}
+      ${tile('Batch', batch.name, 'experiment grouping')}
+      ${tile('Number of Tasks', summary.count ?? batch.count ?? 'n/a', 'total evaluated tasks')}
+    </div>
+    <div class="batch-summary-section">
+      <div class="batch-summary-section__label">Pre-execution</div>
+      <div class="batch-summary-section__grid">
+        ${[
+          tile('Valid', formatRate(summary.valid_rate), 'BT passes schema and construction checks'),
+          tile('Grounded', formatRate(summary.grounded_rate), 'entities and skills map to known world vocabulary'),
+          tile('Params', formatRate(summary.params_rate), 'skill parameters are present and type-compatible'),
+          tile('Structure', formatRate(summary.struct_comp_rate), 'required control-flow pattern is present'),
+        ].join('')}
+      </div>
+    </div>
+    <div class="batch-summary-section">
+      <div class="batch-summary-section__label">Post-execution</div>
+      <div class="batch-summary-section__grid">
+        ${[
+          tile('Success', formatRate(summary.success_rate), 'BT ticking reaches runtime success'),
+          tile('Goal satisfied', formatRate(summary.goal_satisfied_rate), 'post-run world state meets task conditions'),
+        ].join('')}
+      </div>
+    </div>
+  `;
+  renderBatchComparison(batch);
+}
+
+function renderBatchComparison(activeBatch) {
+  const suiteBatches = state.batches
+    .filter((batch) => batch.suite_id === activeBatch.suite_id && batch.method !== 'Other')
+    .sort((a, b) => {
+      const order = (state.catalog.methods || []).indexOf(a.method) - (state.catalog.methods || []).indexOf(b.method);
+      return order !== 0 ? order : a.name.localeCompare(b.name);
+    });
+  const metrics = [
+    ['Valid', 'valid_rate'],
+    ['Grounded', 'grounded_rate'],
+    ['Params', 'params_rate'],
+    ['StructComp', 'struct_comp_rate'],
+    ['Success', 'success_rate'],
   ];
-  els.batchSummary.innerHTML = rows.join('');
+
+  els.batchCompareMeta.textContent = `${activeBatch.suite_label} grouped comparison across pre- and post-execution metrics.`;
+
+  if (!suiteBatches.length) {
+    els.batchCompareLegend.innerHTML = '';
+    els.batchCompareChart.innerHTML = '<div class="status-block muted">No comparison available.</div>';
+    return;
+  }
+
+  els.batchCompareLegend.innerHTML = suiteBatches.map((batch) => `
+    <span class="batch-compare__legend-item${batch.name === activeBatch.name ? ' is-active' : ''}">
+      <span class="batch-compare__swatch" style="background:${methodColor(batch.method)}"></span>
+      ${escapeHtml(batch.method)}
+    </span>
+  `).join('');
+
+  const width = 560;
+  const height = 230;
+  const margin = { top: 18, right: 10, bottom: 42, left: 42 };
+  const plotWidth = width - margin.left - margin.right;
+  const plotHeight = height - margin.top - margin.bottom;
+  const groupWidth = plotWidth / metrics.length;
+  const gap = 6;
+  const barWidth = Math.max(12, Math.min(26, (groupWidth - gap * (suiteBatches.length - 1)) / Math.max(suiteBatches.length, 1)));
+  const axisTicks = [0, 0.25, 0.5, 0.75, 1];
+
+  const bars = [];
+  const labels = [];
+  metrics.forEach(([metricLabel, metricKey], metricIndex) => {
+    const groupX = margin.left + metricIndex * groupWidth;
+    const totalBarsWidth = suiteBatches.length * barWidth + (suiteBatches.length - 1) * gap;
+    const startX = groupX + (groupWidth - totalBarsWidth) / 2;
+    suiteBatches.forEach((batch, batchIndex) => {
+      const value = Number(batch.summary?.[metricKey]);
+      const clamped = Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 0;
+      const barHeight = clamped * plotHeight;
+      const x = startX + batchIndex * (barWidth + gap);
+      const y = margin.top + plotHeight - barHeight;
+      bars.push(`
+        <g>
+          <rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barWidth.toFixed(1)}" height="${barHeight.toFixed(1)}" rx="4" ry="4"
+            fill="${methodColor(batch.method)}" opacity="${batch.name === activeBatch.name ? '1' : '0.72'}"></rect>
+          <text x="${(x + barWidth / 2).toFixed(1)}" y="${(y - 5).toFixed(1)}" text-anchor="middle"
+            font-family="Avenir Next, Segoe UI, sans-serif" font-size="9" fill="#5a544b">${Math.round(clamped * 100)}</text>
+        </g>
+      `);
+    });
+    labels.push(`
+      <text x="${(groupX + groupWidth / 2).toFixed(1)}" y="${(height - 16).toFixed(1)}" text-anchor="middle"
+        font-family="Avenir Next, Segoe UI, sans-serif" font-size="10" fill="#5a544b">${escapeHtml(metricLabel)}</text>
+    `);
+  });
+
+  const grid = axisTicks.map((tick) => {
+    const y = margin.top + plotHeight - tick * plotHeight;
+    return `
+      <line x1="${margin.left}" y1="${y.toFixed(1)}" x2="${(width - margin.right)}" y2="${y.toFixed(1)}" stroke="rgba(125,117,104,0.22)" stroke-width="1"></line>
+      <text x="${(margin.left - 8)}" y="${(y + 3).toFixed(1)}" text-anchor="end"
+        font-family="Avenir Next, Segoe UI, sans-serif" font-size="9" fill="#7a7369">${Math.round(tick * 100)}</text>
+    `;
+  }).join('');
+
+  els.batchCompareChart.innerHTML = `
+    <svg viewBox="0 0 ${width} ${height}" class="batch-compare__svg" aria-label="Method comparison chart">
+      ${grid}
+      <line x1="${margin.left}" y1="${margin.top + plotHeight}" x2="${width - margin.right}" y2="${margin.top + plotHeight}" stroke="#9d9385" stroke-width="1.2"></line>
+      ${bars.join('')}
+      ${labels.join('')}
+    </svg>
+  `;
+}
+
+function renderRootstocks() {
+  const batch = currentBatchRecord();
+  const shouldShow = batch?.method === 'M-Core';
+  els.rootstocksPanel.hidden = !shouldShow;
+  if (!shouldShow) {
+    els.rootstocksView.innerHTML = '';
+    return;
+  }
+
+  const rootstocks = state.catalog.rootstocks || [];
+  els.rootstocksView.innerHTML = rootstocks.map((rootstock) => `
+    <article class="rootstock-card">
+      <div class="rootstock-card__head">
+        <h3>${escapeHtml(rootstock.name)}</h3>
+        <span class="badge">Template</span>
+      </div>
+      <div class="rootstock-card__viz">
+        ${rootstock.bt_svg ? `<div class="rootstock-card__svg">${rootstock.bt_svg}</div>` : '<div class="bt-tree-empty">No rootstock diagram available.</div>'}
+      </div>
+      <p class="rootstock-card__copy">${escapeHtml(rootstock.description || '')}</p>
+      <div class="rootstock-card__section">
+        <div class="rootstock-card__label">When to use</div>
+        <div>${escapeHtml(rootstock.when_to_use || 'n/a')}</div>
+      </div>
+      <div class="rootstock-card__section">
+        <div class="rootstock-card__label">Anti-pattern</div>
+        <div>${escapeHtml(rootstock.anti_pattern || 'n/a')}</div>
+      </div>
+      <div class="rootstock-card__section">
+        <div class="rootstock-card__label">Template shape</div>
+        <div>${escapeHtml(rootstock.template_root_type || 'n/a')}${rootstock.template_memory === true ? ' · memory=true' : ''}</div>
+      </div>
+      <div class="rootstock-card__section">
+        <div class="rootstock-card__label">Slots</div>
+        <ul class="rootstock-slot-list">
+          ${(rootstock.slots || []).map((slot) => `
+            <li><span class="mono">${escapeHtml(slot.name)}</span> ${escapeHtml(slot.description || '')}</li>
+          `).join('')}
+        </ul>
+      </div>
+    </article>
+  `).join('');
 }
 
 function renderSpecView(task) {
   const view = task.task_spec_view || {};
   const sections = [
-    { title: 'Archetype', items: [view.archetype_label || 'Unknown'] },
     { title: 'Required actions', items: view.required_actions || [] },
     { title: 'Required locations', items: view.required_locations || [] },
     { title: 'Control flow expectations', items: view.control_flow || [] },
     { title: 'Success conditions', items: view.success_conditions || [] },
   ];
-  els.taskSpecView.innerHTML = sections.map((section) => `
+  const archetypeCard = `
+    <div class="spec-card spec-card--archetype">
+      <h3>Archetype</h3>
+      <div>${badge(view.archetype_label || 'Unknown')}</div>
+    </div>
+  `;
+  els.taskSpecView.innerHTML = [
+    archetypeCard,
+    ...sections.map((section) => `
     <div class="spec-card">
       <h3>${section.title}</h3>
       ${section.items.length ? `<ul>${section.items.map((item) => `<li>${item}</li>`).join('')}</ul>` : '<div class="muted">None listed.</div>'}
     </div>
-  `).join('');
+  `),
+  ].join('');
 }
 
 function renderResultSummary(task) {
@@ -308,7 +492,7 @@ function renderResultSummary(task) {
 function renderTask() {
   const task = currentTaskRecord();
   if (!task) {
-    els.taskPrompt.textContent = 'Select a batch and task.';
+    els.taskPrompt.textContent = 'Select a task.';
     els.taskBadgeRow.innerHTML = '';
     els.taskSpecView.innerHTML = '';
     els.taskSpecRawView.textContent = '{}';
@@ -324,7 +508,7 @@ function renderTask() {
   els.taskBadgeRow.innerHTML = [
     badge(task.archetype_label),
     badge(task.exec_status || 'Unknown', task.exec_status === 'SUCCESS' ? 'good' : (task.exec_status === 'FAILURE' ? 'bad' : 'warn')),
-    badge(task.success ? 'Goal satisfied' : 'Not satisfied', task.success ? 'good' : 'bad'),
+    badge(task.success ? 'Goal Met' : 'Goal Missed', task.success ? 'good' : 'bad'),
     task.failure_cause ? badge(task.failure_cause, 'warn') : '',
   ].join('');
   renderSpecView(task);
@@ -460,6 +644,7 @@ async function loadCatalog() {
   renderSelectors();
   renderBatchSummary();
   renderTaskList();
+  renderRootstocks();
   renderTask();
   setRuntimeButtonsEnabled(false);
   els.runIdInline.textContent = 'None';
@@ -472,6 +657,7 @@ els.methodSelect.addEventListener('change', () => {
   renderSelectors();
   renderBatchSummary();
   renderTaskList();
+  renderRootstocks();
   renderTask();
 });
 
@@ -482,6 +668,7 @@ els.suiteSelect.addEventListener('change', () => {
   renderSelectors();
   renderBatchSummary();
   renderTaskList();
+  renderRootstocks();
   renderTask();
 });
 
@@ -491,6 +678,7 @@ els.batchSelect.addEventListener('change', () => {
   renderSelectors();
   renderBatchSummary();
   renderTaskList();
+  renderRootstocks();
   renderTask();
 });
 
@@ -509,5 +697,6 @@ els.resetWorld.addEventListener('click', resetWorld);
 loadCatalog()
   .then(checkRuntime)
   .catch((error) => {
+    els.taskListMeta.textContent = `Failed to load catalog: ${error.message}`;
     els.taskPrompt.textContent = `Failed to load catalog: ${error.message}`;
   });

@@ -1,0 +1,339 @@
+{
+  "batch": "pyro_lang50_b1",
+  "suite_names": [
+    "pyrobosim_language50"
+  ],
+  "environments": [
+    "pyrobosim"
+  ],
+  "count": 50,
+  "valid_rate": 1.0,
+  "grounded_rate": 1.0,
+  "params_rate": 1.0,
+  "struct_comp_rate": 0.34,
+  "success_rate": 0.4,
+  "goal_satisfied_rate": 0.4,
+  "avg_tick_count": 25.8,
+  "avg_runtime_ms": 2870.5,
+  "exec_status_counts": {
+    "SUCCESS": 20,
+    "FAILURE": 30
+  },
+  "failure_cause_counts": {
+    "bt_construction": 18,
+    "runtime_failure": 12
+  },
+  "archetypes": {
+    "sequential_pick": {
+      "count": 10,
+      "valid_rate": 1.0,
+      "grounded_rate": 1.0,
+      "params_rate": 1.0,
+      "struct_comp_rate": 0.8,
+      "success_rate": 1.0,
+      "goal_satisfied_rate": 1.0,
+      "avg_tick_count": 21.0,
+      "avg_runtime_ms": 2264.8,
+      "failure_breakdown": {}
+    },
+    "selector_search": {
+      "count": 10,
+      "valid_rate": 1.0,
+      "grounded_rate": 1.0,
+      "params_rate": 1.0,
+      "struct_comp_rate": 0.5,
+      "success_rate": 0.0,
+      "goal_satisfied_rate": 0.0,
+      "avg_tick_count": 25.2,
+      "avg_runtime_ms": 2704.3,
+      "failure_breakdown": {
+        "bt_construction": 7,
+        "runtime_failure": 3
+      }
+    },
+    "pick_and_place": {
+      "count": 10,
+      "valid_rate": 1.0,
+      "grounded_rate": 1.0,
+      "params_rate": 1.0,
+      "struct_comp_rate": 0.3,
+      "success_rate": 1.0,
+      "goal_satisfied_rate": 1.0,
+      "avg_tick_count": 26.5,
+      "avg_runtime_ms": 2844.7,
+      "failure_breakdown": {}
+    },
+    "search_and_place": {
+      "count": 10,
+      "valid_rate": 1.0,
+      "grounded_rate": 1.0,
+      "params_rate": 1.0,
+      "struct_comp_rate": 0.1,
+      "success_rate": 0.0,
+      "goal_satisfied_rate": 0.0,
+      "avg_tick_count": 29.5,
+      "avg_runtime_ms": 3416.9,
+      "failure_breakdown": {
+        "bt_construction": 7,
+        "runtime_failure": 3
+      }
+    },
+    "pick_and_return": {
+      "count": 10,
+      "valid_rate": 1.0,
+      "grounded_rate": 1.0,
+      "params_rate": 1.0,
+      "struct_comp_rate": 0.0,
+      "success_rate": 0.0,
+      "goal_satisfied_rate": 0.0,
+      "avg_tick_count": 26.8,
+      "avg_runtime_ms": 3121.9,
+      "failure_breakdown": {
+        "bt_construction": 4,
+        "runtime_failure": 6
+      }
+    }
+  },
+  "remaining_failures": [
+    {
+      "id": "lang11_task11_search_bread_pantry_fridge",
+      "archetype": "selector_search",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "bt_construction",
+      "failure_notes": "Search-family BT failed in a detect/fallback branch despite passing static validation."
+    },
+    {
+      "id": "lang12_task12_search_bread_fridge_pantry",
+      "archetype": "selector_search",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "runtime_failure",
+      "failure_notes": "Execution did not finish successfully in the simulator/control server."
+    },
+    {
+      "id": "lang13_task13_search_snacks_pantry_fridge",
+      "archetype": "selector_search",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "bt_construction",
+      "failure_notes": "Search-family BT failed in a detect/fallback branch despite passing static validation."
+    },
+    {
+      "id": "lang14_task14_search_soda_fridge_pantry",
+      "archetype": "selector_search",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "bt_construction",
+      "failure_notes": "Search-family BT failed in a detect/fallback branch despite passing static validation."
+    },
+    {
+      "id": "lang15_task15_search_butter_fridge_pantry",
+      "archetype": "selector_search",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "bt_construction",
+      "failure_notes": "Search-family BT failed in a detect/fallback branch despite passing static validation."
+    },
+    {
+      "id": "lang16_task16_search_waste_desk_bin",
+      "archetype": "selector_search",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "runtime_failure",
+      "failure_notes": "Execution did not finish successfully in the simulator/control server."
+    },
+    {
+      "id": "lang17_task17_search_waste_bin_desk",
+      "archetype": "selector_search",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "runtime_failure",
+      "failure_notes": "Execution did not finish successfully in the simulator/control server."
+    },
+    {
+      "id": "lang18_task18_search_snacks_pantry_desk",
+      "archetype": "selector_search",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "bt_construction",
+      "failure_notes": "Search-family BT failed in a detect/fallback branch despite passing static validation."
+    },
+    {
+      "id": "lang19_task19_search_soda_fridge_desk",
+      "archetype": "selector_search",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "bt_construction",
+      "failure_notes": "Search-family BT failed in a detect/fallback branch despite passing static validation."
+    },
+    {
+      "id": "lang20_task20_search_bread_pantry_table",
+      "archetype": "selector_search",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "bt_construction",
+      "failure_notes": "Search-family BT failed in a detect/fallback branch despite passing static validation."
+    },
+    {
+      "id": "lang31_task31_search_place_bread_table",
+      "archetype": "search_and_place",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "bt_construction",
+      "failure_notes": "Search-family BT failed in a detect/fallback branch despite passing static validation."
+    },
+    {
+      "id": "lang32_task32_search_place_bread_table_rev",
+      "archetype": "search_and_place",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "runtime_failure",
+      "failure_notes": "Execution did not finish successfully in the simulator/control server."
+    },
+    {
+      "id": "lang33_task33_search_place_snacks_table",
+      "archetype": "search_and_place",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "bt_construction",
+      "failure_notes": "Search-family BT failed in a detect/fallback branch despite passing static validation."
+    },
+    {
+      "id": "lang34_task34_search_place_soda_pantry",
+      "archetype": "search_and_place",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "bt_construction",
+      "failure_notes": "Search-family BT failed in a detect/fallback branch despite passing static validation."
+    },
+    {
+      "id": "lang35_task35_search_place_butter_desk",
+      "archetype": "search_and_place",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "bt_construction",
+      "failure_notes": "Search-family BT failed in a detect/fallback branch despite passing static validation."
+    },
+    {
+      "id": "lang36_task36_search_place_soda_table",
+      "archetype": "search_and_place",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "bt_construction",
+      "failure_notes": "Search-family BT failed in a detect/fallback branch despite passing static validation."
+    },
+    {
+      "id": "lang37_task37_search_place_bread_desk",
+      "archetype": "search_and_place",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "bt_construction",
+      "failure_notes": "Search-family BT failed in a detect/fallback branch despite passing static validation."
+    },
+    {
+      "id": "lang38_task38_search_place_snacks_desk",
+      "archetype": "search_and_place",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "bt_construction",
+      "failure_notes": "Search-family BT failed in a detect/fallback branch despite passing static validation."
+    },
+    {
+      "id": "lang39_task39_search_place_waste_dumpster",
+      "archetype": "search_and_place",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "runtime_failure",
+      "failure_notes": "Execution did not finish successfully in the simulator/control server."
+    },
+    {
+      "id": "lang40_task40_search_place_waste_dumpster_rev",
+      "archetype": "search_and_place",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "runtime_failure",
+      "failure_notes": "Execution did not finish successfully in the simulator/control server."
+    },
+    {
+      "id": "lang41_task41_search_return_bread",
+      "archetype": "pick_and_return",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "bt_construction",
+      "failure_notes": "Search-family BT failed in a detect/fallback branch despite passing static validation."
+    },
+    {
+      "id": "lang42_task42_search_return_snacks",
+      "archetype": "pick_and_return",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "bt_construction",
+      "failure_notes": "Search-family BT failed in a detect/fallback branch despite passing static validation."
+    },
+    {
+      "id": "lang43_task43_search_return_soda",
+      "archetype": "pick_and_return",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "bt_construction",
+      "failure_notes": "Search-family BT failed in a detect/fallback branch despite passing static validation."
+    },
+    {
+      "id": "lang44_task44_search_return_butter",
+      "archetype": "pick_and_return",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "bt_construction",
+      "failure_notes": "Search-family BT failed in a detect/fallback branch despite passing static validation."
+    },
+    {
+      "id": "lang45_task45_search_return_waste",
+      "archetype": "pick_and_return",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "runtime_failure",
+      "failure_notes": "Execution did not finish successfully in the simulator/control server."
+    },
+    {
+      "id": "lang46_task46_search_return_bread_table",
+      "archetype": "pick_and_return",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "runtime_failure",
+      "failure_notes": "Execution did not finish successfully in the simulator/control server."
+    },
+    {
+      "id": "lang47_task47_search_return_snacks_table",
+      "archetype": "pick_and_return",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "runtime_failure",
+      "failure_notes": "Execution did not finish successfully in the simulator/control server."
+    },
+    {
+      "id": "lang48_task48_search_return_soda_table",
+      "archetype": "pick_and_return",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "runtime_failure",
+      "failure_notes": "Execution did not finish successfully in the simulator/control server."
+    },
+    {
+      "id": "lang49_task49_search_return_butter_table",
+      "archetype": "pick_and_return",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "runtime_failure",
+      "failure_notes": "Execution did not finish successfully in the simulator/control server."
+    },
+    {
+      "id": "lang50_task50_search_return_waste_bin",
+      "archetype": "pick_and_return",
+      "exec_status": "FAILURE",
+      "goal_satisfied": false,
+      "failure_cause": "runtime_failure",
+      "failure_notes": "Execution did not finish successfully in the simulator/control server."
+    }
+  ]
+}

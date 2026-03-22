@@ -1,0 +1,109 @@
+{
+  "root": {
+    "type": "selector",
+    "memory": true,
+    "children": [
+      {
+        "type": "sequence",
+        "memory": true,
+        "children": [
+          {
+            "type": "action",
+            "name": "navigate_to_pantry",
+            "action": "navigate",
+            "params": {
+              "target_location": "pantry"
+            }
+          },
+          {
+            "type": "action",
+            "name": "open_pantry",
+            "action": "open"
+          },
+          {
+            "type": "action",
+            "name": "detect_snacks",
+            "action": "detect",
+            "params": {
+              "object": "snacks"
+            },
+            "outputs": {
+              "detected_objects": "detected_objects"
+            }
+          },
+          {
+            "type": "condition",
+            "name": "check_snacks_detected",
+            "key": "detected_objects",
+            "operator": "contains",
+            "value": "snacks"
+          },
+          {
+            "type": "action",
+            "name": "pick_snacks",
+            "action": "pick",
+            "params": {
+              "object": "snacks"
+            }
+          },
+          {
+            "type": "action",
+            "name": "return_to_dining",
+            "action": "navigate",
+            "params": {
+              "target_location": "dining"
+            }
+          }
+        ]
+      },
+      {
+        "type": "sequence",
+        "memory": true,
+        "children": [
+          {
+            "type": "action",
+            "name": "navigate_to_desk",
+            "action": "navigate",
+            "params": {
+              "target_location": "desk"
+            }
+          },
+          {
+            "type": "action",
+            "name": "detect_snacks",
+            "action": "detect",
+            "params": {
+              "object": "snacks"
+            },
+            "outputs": {
+              "detected_objects": "detected_objects"
+            }
+          },
+          {
+            "type": "condition",
+            "name": "check_snacks_detected",
+            "key": "detected_objects",
+            "operator": "contains",
+            "value": "snacks"
+          },
+          {
+            "type": "action",
+            "name": "pick_snacks",
+            "action": "pick",
+            "params": {
+              "object": "snacks"
+            }
+          },
+          {
+            "type": "action",
+            "name": "return_to_dining",
+            "action": "navigate",
+            "params": {
+              "target_location": "dining"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

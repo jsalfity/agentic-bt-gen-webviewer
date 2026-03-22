@@ -54,7 +54,7 @@
     <section class="top-banner panel">
       <section class="top-banner__section">
         <div class="top-banner__head">
-          <h2>Dataset</h2>
+          <h2>Dataset and Active Batch</h2>
         </div>
         <div class="banner-grid banner-grid--dataset">
           <div>
@@ -70,50 +70,99 @@
             <select id="batchSelect"></select>
           </div>
         </div>
+        <div id="batchSummary" class="batch-summary-grid"></div>
       </section>
 
       <section class="top-banner__section">
         <div class="top-banner__head">
-          <h2>Batch Summary</h2>
+          <h2>Method Comparison</h2>
         </div>
-        <div id="batchSummary" class="stack stack--horizontal"></div>
+        <div class="batch-compare">
+          <div class="batch-compare__head">
+            <h3>Selected Suite Comparison</h3>
+            <span id="batchCompareMeta" class="panel-meta">Grouped comparison across evaluation metrics.</span>
+          </div>
+          <div id="batchCompareLegend" class="batch-compare__legend"></div>
+          <div id="batchCompareChart" class="batch-compare__chart"></div>
+        </div>
       </section>
     </section>
 
-    <section class="panel task-picker-panel">
-      <div class="panel-head">
-        <h2>Select a Task Prompt</h2>
-        <span id="taskListMeta" class="panel-meta">Choose one prompt from the current batch.</span>
-      </div>
-      <div id="taskList" class="task-list" role="listbox" aria-label="Task prompts"></div>
-    </section>
-
     <section class="content content--full">
+      <section id="rootstocksPanel" class="panel rootstocks-panel" hidden>
+        <div class="panel-head">
+          <h2>M-Core Rootstocks</h2>
+          <span class="panel-meta">Composition templates exposed to the M-Core method</span>
+        </div>
+        <div class="section-copy">
+          Rootstocks are reusable behavior-tree composition templates exposed to the M-Core method during synthesis. They are not executable skills themselves; instead, they provide canonical structural patterns that the agent can instantiate with the correct objects, locations, and control-flow slots for a task.
+        </div>
+        <div id="rootstocksView" class="rootstocks-grid"></div>
+      </section>
+
       <section class="content-grid task-bt-grid">
-        <article class="panel intro-card intro-card--compact">
+        <article class="panel task-picker-panel">
+          <div class="panel-head">
+            <h2>Select a Task Prompt</h2>
+            <span id="taskListMeta" class="panel-meta">Choose one prompt from the current batch.</span>
+          </div>
+          <div id="taskList" class="task-list" role="listbox" aria-label="Task prompts"></div>
+        </article>
+
+        <article class="panel selected-task-group">
           <div class="panel-head">
             <h2>Selected Task</h2>
             <div id="taskBadgeRow" class="badge-row"></div>
           </div>
-          <div class="intro-card__body">
-            <div class="intro-card__label">Task Prompt</div>
-            <div id="taskPrompt" class="prompt-card prompt-card--compact">Select a batch and task.</div>
-          </div>
-        </article>
+          <div class="selected-task-group__body">
+            <section class="selected-task-group__section">
+              <div id="taskPrompt" class="selected-task-panel__prompt">Select a task.</div>
+            </section>
 
-        <article class="panel">
-          <div class="panel-head">
-            <h2>Generated BT</h2>
-            <span class="panel-meta">Compact visual layout first, raw JSON second</span>
-          </div>
-          <div class="bt-tree-panel">
-            <div class="bt-tree-wrap">
-              <div id="btTreeView" class="bt-tree-empty">Select a task.</div>
-            </div>
-            <details class="bt-json-wrap">
-              <summary class="compact-pre-title">Generated BT JSON</summary>
-              <pre id="btView" class="pre-compact">{}</pre>
-            </details>
+            <section class="selected-task-group__section">
+              <div class="selected-task-group__section-head">
+                <h3>Generated BT</h3>
+                <span class="panel-meta">Compact visual layout first, raw JSON second</span>
+              </div>
+              <div class="bt-tree-panel">
+                <div class="bt-tree-wrap">
+                  <div id="btTreeView" class="bt-tree-empty">Select a task.</div>
+                </div>
+                <details class="bt-json-wrap">
+                  <summary class="compact-pre-title">Generated BT JSON</summary>
+                  <pre id="btView" class="pre-compact">{}</pre>
+                </details>
+              </div>
+            </section>
+
+            <section class="content-grid two-up selected-task-details">
+              <div class="selected-task-group__subpanel">
+                <div class="selected-task-group__section-head">
+                  <h3>Readable Task Spec</h3>
+                  <span class="panel-meta">Normalized from the YAML task definition</span>
+                </div>
+                <div class="section-copy">
+                  A task spec is the evaluator-side contract for a task. It defines the intended behavior, the structural requirements the BT should satisfy, and the success conditions used after execution to decide whether the run succeeded.
+                </div>
+                <div id="taskSpecView" class="spec-grid"></div>
+                <details class="raw-data-block">
+                  <summary class="raw-data-summary">Click to view raw task spec</summary>
+                  <pre id="taskSpecRawView">{}</pre>
+                </details>
+              </div>
+
+              <div class="selected-task-group__subpanel">
+                <div class="selected-task-group__section-head">
+                  <h3>Evaluation Summary</h3>
+                  <span class="panel-meta">Readable interpretation of the batch result row</span>
+                </div>
+                <div id="resultSummaryView" class="result-grid"></div>
+                <details class="raw-data-block">
+                  <summary class="raw-data-summary">Click to view raw evaluation row</summary>
+                  <pre id="resultView">{}</pre>
+                </details>
+              </div>
+            </section>
           </div>
         </article>
       </section>
@@ -165,35 +214,6 @@
               <pre id="worldStateView">{}</pre>
             </div>
           </div>
-        </article>
-      </section>
-
-      <section class="content-grid two-up">
-        <article class="panel">
-          <div class="panel-head">
-            <h2>Readable Task Spec</h2>
-            <span class="panel-meta">Normalized from the YAML task definition</span>
-          </div>
-          <div class="section-copy">
-            A task spec is the evaluator-side contract for a task. It defines the intended behavior, the structural requirements the BT should satisfy, and the success conditions used after execution to decide whether the run succeeded.
-          </div>
-          <div id="taskSpecView" class="spec-grid"></div>
-          <details class="raw-data-block">
-            <summary class="raw-data-summary">Click to view raw task spec</summary>
-            <pre id="taskSpecRawView">{}</pre>
-          </details>
-        </article>
-
-        <article class="panel">
-          <div class="panel-head">
-            <h2>Evaluation Summary</h2>
-            <span class="panel-meta">Readable interpretation of the batch result row</span>
-          </div>
-          <div id="resultSummaryView" class="result-grid"></div>
-          <details class="raw-data-block">
-            <summary class="raw-data-summary">Click to view raw evaluation row</summary>
-            <pre id="resultView">{}</pre>
-          </details>
         </article>
       </section>
     </section>
