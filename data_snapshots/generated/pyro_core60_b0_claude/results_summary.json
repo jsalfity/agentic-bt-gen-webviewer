@@ -1,0 +1,85 @@
+{
+  "batch": "pyro_core60_b0_claude",
+  "suite_names": [
+    "pyrobosim_core60"
+  ],
+  "environments": [
+    "pyrobosim"
+  ],
+  "count": 60,
+  "valid_rate": 1.0,
+  "grounded_rate": 1.0,
+  "params_rate": 1.0,
+  "struct_comp_rate": 1.0,
+  "success_rate": 1.0,
+  "goal_satisfied_rate": 1.0,
+  "avg_tick_count": 29.8,
+  "avg_runtime_ms": 3337.8,
+  "exec_status_counts": {
+    "SUCCESS": 60
+  },
+  "failure_cause_counts": {},
+  "archetypes": {
+    "sequential_pick": {
+      "count": 12,
+      "valid_rate": 1.0,
+      "grounded_rate": 1.0,
+      "params_rate": 1.0,
+      "struct_comp_rate": 1.0,
+      "success_rate": 1.0,
+      "goal_satisfied_rate": 1.0,
+      "avg_tick_count": 20.8,
+      "avg_runtime_ms": 2249.1,
+      "failure_breakdown": {}
+    },
+    "selector_search": {
+      "count": 12,
+      "valid_rate": 1.0,
+      "grounded_rate": 1.0,
+      "params_rate": 1.0,
+      "struct_comp_rate": 1.0,
+      "success_rate": 1.0,
+      "goal_satisfied_rate": 1.0,
+      "avg_tick_count": 22.5,
+      "avg_runtime_ms": 2517.7,
+      "failure_breakdown": {}
+    },
+    "pick_and_place": {
+      "count": 12,
+      "valid_rate": 1.0,
+      "grounded_rate": 1.0,
+      "params_rate": 1.0,
+      "struct_comp_rate": 1.0,
+      "success_rate": 1.0,
+      "goal_satisfied_rate": 1.0,
+      "avg_tick_count": 30.7,
+      "avg_runtime_ms": 3300.3,
+      "failure_breakdown": {}
+    },
+    "search_and_place": {
+      "count": 12,
+      "valid_rate": 1.0,
+      "grounded_rate": 1.0,
+      "params_rate": 1.0,
+      "struct_comp_rate": 1.0,
+      "success_rate": 1.0,
+      "goal_satisfied_rate": 1.0,
+      "avg_tick_count": 36.0,
+      "avg_runtime_ms": 3949.6,
+      "failure_breakdown": {}
+    },
+    "pick_and_return": {
+      "count": 12,
+      "valid_rate": 1.0,
+      "grounded_rate": 1.0,
+      "params_rate": 1.0,
+      "struct_comp_rate": 1.0,
+      "success_rate": 1.0,
+      "goal_satisfied_rate": 1.0,
+      "avg_tick_count": 39.1,
+      "avg_runtime_ms": 4672.5,
+      "failure_breakdown": {}
+    }
+  },
+  "remaining_failures": []
+}

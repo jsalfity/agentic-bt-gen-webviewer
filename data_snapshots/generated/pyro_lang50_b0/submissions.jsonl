@@ -1,0 +1,50 @@
+{"submission_id": "task_01", "timestamp": "2026-03-22T20:06:08.752507Z", "generated": "jsons/task_01.json", "task_prompt": "Head to pantry, detect bread, and pick it up."}
+{"submission_id": "task_02", "timestamp": "2026-03-22T20:06:08.752826Z", "generated": "jsons/task_02.json", "task_prompt": "Please navigate to pantry, detect snacks, and pick it up."}
+{"submission_id": "task_03", "timestamp": "2026-03-22T20:06:08.752833Z", "generated": "jsons/task_03.json", "task_prompt": "Head to fridge, detect soda, and pick it up."}
+{"submission_id": "task_04", "timestamp": "2026-03-22T20:06:08.752838Z", "generated": "jsons/task_04.json", "task_prompt": "Please navigate to fridge, detect butter, and pick it up."}
+{"submission_id": "task_05", "timestamp": "2026-03-22T20:06:08.752841Z", "generated": "jsons/task_05.json", "task_prompt": "Head to desk_desktop, detect waste, and pick it up."}
+{"submission_id": "task_06", "timestamp": "2026-03-22T20:06:08.752845Z", "generated": "jsons/task_06.json", "task_prompt": "Please navigate to bin_disposal, detect waste, and pick it up."}
+{"submission_id": "task_07", "timestamp": "2026-03-22T20:06:08.752848Z", "generated": "jsons/task_07.json", "task_prompt": "Head to pantry, detect bread, pick it up, then return to dining."}
+{"submission_id": "task_08", "timestamp": "2026-03-22T20:06:08.752851Z", "generated": "jsons/task_08.json", "task_prompt": "Head to fridge, detect soda, pick it up, then go to office."}
+{"submission_id": "task_09", "timestamp": "2026-03-22T20:06:08.752855Z", "generated": "jsons/task_09.json", "task_prompt": "Head to pantry, detect snacks, pick it up, then go to kitchen."}
+{"submission_id": "task_10", "timestamp": "2026-03-22T20:06:08.752858Z", "generated": "jsons/task_10.json", "task_prompt": "Head to fridge, detect butter, pick it up, then go to closet."}
+{"submission_id": "task_11", "timestamp": "2026-03-22T20:06:08.752861Z", "generated": "jsons/task_11.json", "task_prompt": "Check pantry, then fridge for bread. If found, pick it up."}
+{"submission_id": "task_12", "timestamp": "2026-03-22T20:06:08.752864Z", "generated": "jsons/task_12.json", "task_prompt": "Check fridge, then pantry for bread. If found, pick it up."}
+{"submission_id": "task_13", "timestamp": "2026-03-22T20:06:08.752868Z", "generated": "jsons/task_13.json", "task_prompt": "Check pantry, then fridge for snacks. If found, pick it up."}
+{"submission_id": "task_14", "timestamp": "2026-03-22T20:06:08.752871Z", "generated": "jsons/task_14.json", "task_prompt": "Check fridge, then pantry for soda. If found, pick it up."}
+{"submission_id": "task_15", "timestamp": "2026-03-22T20:06:08.752874Z", "generated": "jsons/task_15.json", "task_prompt": "Check fridge, then pantry for butter. If found, pick it up."}
+{"submission_id": "task_16", "timestamp": "2026-03-22T20:06:08.752877Z", "generated": "jsons/task_16.json", "task_prompt": "Check desk_desktop, then bin_disposal for waste. If found, pick it up."}
+{"submission_id": "task_17", "timestamp": "2026-03-22T20:06:08.752881Z", "generated": "jsons/task_17.json", "task_prompt": "Check bin_disposal, then desk_desktop for waste. If found, pick it up."}
+{"submission_id": "task_18", "timestamp": "2026-03-22T20:06:08.752884Z", "generated": "jsons/task_18.json", "task_prompt": "Check pantry, then desk_desktop for snacks. If found, pick it up."}
+{"submission_id": "task_19", "timestamp": "2026-03-22T20:06:08.752887Z", "generated": "jsons/task_19.json", "task_prompt": "Check fridge, then desk_desktop for soda. If found, pick it up."}
+{"submission_id": "task_20", "timestamp": "2026-03-22T20:06:08.752891Z", "generated": "jsons/task_20.json", "task_prompt": "Check pantry, then table_tabletop for bread. If found, pick it up."}
+{"submission_id": "task_21", "timestamp": "2026-03-22T20:06:08.752894Z", "generated": "jsons/task_21.json", "task_prompt": "Pick bread from pantry and set it on table_tabletop."}
+{"submission_id": "task_22", "timestamp": "2026-03-22T20:06:08.752897Z", "generated": "jsons/task_22.json", "task_prompt": "Pick snacks from pantry and set it on table_tabletop."}
+{"submission_id": "task_23", "timestamp": "2026-03-22T20:06:08.752900Z", "generated": "jsons/task_23.json", "task_prompt": "Pick soda from fridge and set it at pantry."}
+{"submission_id": "task_24", "timestamp": "2026-03-22T20:06:08.752903Z", "generated": "jsons/task_24.json", "task_prompt": "Pick butter from fridge and set it on desk_desktop."}
+{"submission_id": "task_25", "timestamp": "2026-03-22T20:06:08.752906Z", "generated": "jsons/task_25.json", "task_prompt": "Pick bread from pantry and set it at fridge."}
+{"submission_id": "task_26", "timestamp": "2026-03-22T20:06:08.752910Z", "generated": "jsons/task_26.json", "task_prompt": "Pick snacks from pantry and set it on desk_desktop."}
+{"submission_id": "task_27", "timestamp": "2026-03-22T20:06:08.752914Z", "generated": "jsons/task_27.json", "task_prompt": "Pick soda from fridge and set it on table_tabletop."}
+{"submission_id": "task_28", "timestamp": "2026-03-22T20:06:08.752917Z", "generated": "jsons/task_28.json", "task_prompt": "Pick butter from fridge and set it at pantry."}
+{"submission_id": "task_29", "timestamp": "2026-03-22T20:06:08.752921Z", "generated": "jsons/task_29.json", "task_prompt": "Pick waste from desk_desktop and set it at dumpster_disposal."}
+{"submission_id": "task_30", "timestamp": "2026-03-22T20:06:08.752924Z", "generated": "jsons/task_30.json", "task_prompt": "Pick waste from bin_disposal and set it at dumpster_disposal."}
+{"submission_id": "task_31", "timestamp": "2026-03-22T20:06:08.752927Z", "generated": "jsons/task_31.json", "task_prompt": "Search pantry, and only if needed then fridge for bread. If found, place it on table_tabletop."}
+{"submission_id": "task_32", "timestamp": "2026-03-22T20:06:08.752930Z", "generated": "jsons/task_32.json", "task_prompt": "Search fridge, and only if needed then pantry for bread. If found, place it on table_tabletop."}
+{"submission_id": "task_33", "timestamp": "2026-03-22T20:06:08.752934Z", "generated": "jsons/task_33.json", "task_prompt": "Search pantry, and only if needed then desk_desktop for snacks. If found, place it on table_tabletop."}
+{"submission_id": "task_34", "timestamp": "2026-03-22T20:06:08.752937Z", "generated": "jsons/task_34.json", "task_prompt": "Search fridge, and only if needed then pantry for soda. If found, place it at pantry."}
+{"submission_id": "task_35", "timestamp": "2026-03-22T20:06:08.752940Z", "generated": "jsons/task_35.json", "task_prompt": "Search fridge, and only if needed then pantry for butter. If found, place it on desk_desktop."}
+{"submission_id": "task_36", "timestamp": "2026-03-22T20:06:08.752943Z", "generated": "jsons/task_36.json", "task_prompt": "Search fridge, and only if needed then pantry for soda. If found, place it on table_tabletop."}
+{"submission_id": "task_37", "timestamp": "2026-03-22T20:06:08.752946Z", "generated": "jsons/task_37.json", "task_prompt": "Search pantry, and only if needed then desk_desktop for bread. If found, place it on desk_desktop."}
+{"submission_id": "task_38", "timestamp": "2026-03-22T20:06:08.752949Z", "generated": "jsons/task_38.json", "task_prompt": "Search pantry, and only if needed then fridge for snacks. If found, place it on desk_desktop."}
+{"submission_id": "task_39", "timestamp": "2026-03-22T20:06:08.752952Z", "generated": "jsons/task_39.json", "task_prompt": "Search desk_desktop, and only if needed then bin_disposal for waste. If found, place it at dumpster_disposal."}
+{"submission_id": "task_40", "timestamp": "2026-03-22T20:06:08.752955Z", "generated": "jsons/task_40.json", "task_prompt": "Search bin_disposal, and only if needed then desk_desktop for waste. If found, place it at dumpster_disposal."}
+{"submission_id": "task_41", "timestamp": "2026-03-22T20:06:08.752957Z", "generated": "jsons/task_41.json", "task_prompt": "Return to dining while holding bread, but only after you have first checked table_tabletop and then pantry, found it, and picked it up."}
+{"submission_id": "task_42", "timestamp": "2026-03-22T20:06:08.752961Z", "generated": "jsons/task_42.json", "task_prompt": "Return to dining while holding snacks, but only after you have first checked table_tabletop and then pantry, found them, and picked them up."}
+{"submission_id": "task_43", "timestamp": "2026-03-22T20:06:08.753180Z", "generated": "jsons/task_43.json", "task_prompt": "Return to dining while holding soda, but only after you have first checked table_tabletop and then fridge, found it, and picked it up."}
+{"submission_id": "task_44", "timestamp": "2026-03-22T20:06:08.753186Z", "generated": "jsons/task_44.json", "task_prompt": "Return to dining while holding butter, but only after you have first checked table_tabletop and then fridge, found it, and picked it up."}
+{"submission_id": "task_45", "timestamp": "2026-03-22T20:06:08.753189Z", "generated": "jsons/task_45.json", "task_prompt": "Return to dining while holding waste, but only after you have first checked bin_disposal and then desk_desktop, found it, and picked it up."}
+{"submission_id": "task_46", "timestamp": "2026-03-22T20:06:08.753192Z", "generated": "jsons/task_46.json", "task_prompt": "Return to dining while holding bread, but only after you have found and picked it up."}
+{"submission_id": "task_47", "timestamp": "2026-03-22T20:06:08.753195Z", "generated": "jsons/task_47.json", "task_prompt": "Return to dining while holding snacks, but only after you have found and picked it up."}
+{"submission_id": "task_48", "timestamp": "2026-03-22T20:06:08.753198Z", "generated": "jsons/task_48.json", "task_prompt": "Return to dining while holding soda, but only after you have found and picked it up."}
+{"submission_id": "task_49", "timestamp": "2026-03-22T20:06:08.753200Z", "generated": "jsons/task_49.json", "task_prompt": "Return to dining while holding butter, but only after you have found and picked it up."}
+{"submission_id": "task_50", "timestamp": "2026-03-22T20:06:08.753203Z", "generated": "jsons/task_50.json", "task_prompt": "Return to dining while holding waste, but only after you have found and picked it up."}

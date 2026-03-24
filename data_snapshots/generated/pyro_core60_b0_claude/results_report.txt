@@ -1,0 +1,60 @@
+Batch: pyro_core60_b0_claude
+Suites: pyrobosim_core60
+Environments: pyrobosim
+Tasks: 60
+
+Overall
+  Success rate: 1.0
+  Goal satisfied rate: 1.0
+  Valid rate: 1.0
+  Grounded rate: 1.0
+  Params rate: 1.0
+  Struct comp rate: 1.0
+  Avg tick count: 29.8
+  Avg runtime ms: 3337.8
+
+Execution Status Counts
+  SUCCESS: 60
+
+Failure Cause Counts
+  none
+
+By Archetype
+  pick_and_place
+    count: 12
+    success_rate: 1.0
+    struct_comp_rate: 1.0
+    avg_tick_count: 30.7
+    avg_runtime_ms: 3300.3
+    failure_breakdown: none
+  pick_and_return
+    count: 12
+    success_rate: 1.0
+    struct_comp_rate: 1.0
+    avg_tick_count: 39.1
+    avg_runtime_ms: 4672.5
+    failure_breakdown: none
+  search_and_place
+    count: 12
+    success_rate: 1.0
+    struct_comp_rate: 1.0
+    avg_tick_count: 36.0
+    avg_runtime_ms: 3949.6
+    failure_breakdown: none
+  selector_search
+    count: 12
+    success_rate: 1.0
+    struct_comp_rate: 1.0
+    avg_tick_count: 22.5
+    avg_runtime_ms: 2517.7
+    failure_breakdown: none
+  sequential_pick
+    count: 12
+    success_rate: 1.0
+    struct_comp_rate: 1.0
+    avg_tick_count: 20.8
+    avg_runtime_ms: 2249.1
+    failure_breakdown: none
+
+Remaining Failures
+  none

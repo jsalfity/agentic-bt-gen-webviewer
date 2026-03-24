@@ -1,0 +1,73 @@
+{
+  "root": {
+    "type": "selector",
+    "memory": true,
+    "children": [
+      {
+        "type": "sequence",
+        "memory": true,
+        "children": [
+          {
+            "type": "action",
+            "name": "navigate_to_pantry",
+            "action": "navigate",
+            "params": {
+              "target_location": "pantry"
+            }
+          },
+          {
+            "type": "action",
+            "name": "open_pantry",
+            "action": "open"
+          },
+          {
+            "type": "action",
+            "name": "detect_bread_at_pantry",
+            "action": "detect",
+            "params": {
+              "object": "bread"
+            }
+          },
+          {
+            "type": "action",
+            "name": "pick_bread_from_pantry",
+            "action": "pick",
+            "params": {
+              "object": "bread"
+            }
+          }
+        ]
+      },
+      {
+        "type": "sequence",
+        "memory": true,
+        "children": [
+          {
+            "type": "action",
+            "name": "navigate_to_table_tabletop",
+            "action": "navigate",
+            "params": {
+              "target_location": "table_tabletop"
+            }
+          },
+          {
+            "type": "action",
+            "name": "detect_bread_at_table",
+            "action": "detect",
+            "params": {
+              "object": "bread"
+            }
+          },
+          {
+            "type": "action",
+            "name": "pick_bread_from_table",
+            "action": "pick",
+            "params": {
+              "object": "bread"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

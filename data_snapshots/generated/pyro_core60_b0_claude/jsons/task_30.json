@@ -1,0 +1,45 @@
+{
+  "root": {
+    "type": "sequence",
+    "memory": true,
+    "children": [
+      {
+        "type": "action",
+        "name": "navigate_to_bin",
+        "action": "navigate",
+        "params": {
+          "target_location": "bin_disposal"
+        }
+      },
+      {
+        "type": "action",
+        "name": "detect_waste",
+        "action": "detect",
+        "params": {
+          "object": "waste"
+        }
+      },
+      {
+        "type": "action",
+        "name": "pick_waste",
+        "action": "pick",
+        "params": {
+          "object": "waste"
+        }
+      },
+      {
+        "type": "action",
+        "name": "navigate_to_dumpster",
+        "action": "navigate",
+        "params": {
+          "target_location": "dumpster_disposal"
+        }
+      },
+      {
+        "type": "action",
+        "name": "place_waste",
+        "action": "place"
+      }
+    ]
+  }
+}

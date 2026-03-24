@@ -1,0 +1,112 @@
+{
+  "root": {
+    "type": "sequence",
+    "memory": true,
+    "children": [
+      {
+        "type": "selector",
+        "memory": true,
+        "children": [
+          {
+            "type": "sequence",
+            "memory": true,
+            "children": [
+              {
+                "type": "action",
+                "name": "navigate_to_table",
+                "action": "navigate",
+                "params": {
+                  "target_location": "table_tabletop"
+                }
+              },
+              {
+                "type": "action",
+                "name": "detect_waste_at_table",
+                "action": "detect",
+                "params": {
+                  "object": "waste"
+                }
+              },
+              {
+                "type": "action",
+                "name": "pick_waste_from_table",
+                "action": "pick",
+                "params": {
+                  "object": "waste"
+                }
+              }
+            ]
+          },
+          {
+            "type": "sequence",
+            "memory": true,
+            "children": [
+              {
+                "type": "action",
+                "name": "navigate_to_bin",
+                "action": "navigate",
+                "params": {
+                  "target_location": "bin_disposal"
+                }
+              },
+              {
+                "type": "action",
+                "name": "detect_waste_at_bin",
+                "action": "detect",
+                "params": {
+                  "object": "waste"
+                }
+              },
+              {
+                "type": "action",
+                "name": "pick_waste_from_bin",
+                "action": "pick",
+                "params": {
+                  "object": "waste"
+                }
+              }
+            ]
+          },
+          {
+            "type": "sequence",
+            "memory": true,
+            "children": [
+              {
+                "type": "action",
+                "name": "navigate_to_desk",
+                "action": "navigate",
+                "params": {
+                  "target_location": "desk_desktop"
+                }
+              },
+              {
+                "type": "action",
+                "name": "detect_waste_at_desk",
+                "action": "detect",
+                "params": {
+                  "object": "waste"
+                }
+              },
+              {
+                "type": "action",
+                "name": "pick_waste_from_desk",
+                "action": "pick",
+                "params": {
+                  "object": "waste"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "action",
+        "name": "navigate_to_closet",
+        "action": "navigate",
+        "params": {
+          "target_location": "closet"
+        }
+      }
+    ]
+  }
+}

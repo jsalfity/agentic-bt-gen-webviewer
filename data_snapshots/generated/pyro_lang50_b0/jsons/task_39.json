@@ -1,0 +1,87 @@
+{
+  "root": {
+    "type": "sequence",
+    "memory": true,
+    "children": [
+      {
+        "type": "selector",
+        "memory": true,
+        "children": [
+          {
+            "type": "sequence",
+            "memory": true,
+            "children": [
+              {
+                "type": "action",
+                "name": "navigate_to_desk_desktop",
+                "action": "navigate",
+                "params": {
+                  "target_location": "desk_desktop"
+                }
+              },
+              {
+                "type": "action",
+                "name": "detect_waste_desk",
+                "action": "detect",
+                "params": {
+                  "object": "waste"
+                }
+              },
+              {
+                "type": "action",
+                "name": "pick_waste_desk",
+                "action": "pick",
+                "params": {
+                  "object": "waste"
+                }
+              }
+            ]
+          },
+          {
+            "type": "sequence",
+            "memory": true,
+            "children": [
+              {
+                "type": "action",
+                "name": "navigate_to_bin_disposal",
+                "action": "navigate",
+                "params": {
+                  "target_location": "bin_disposal"
+                }
+              },
+              {
+                "type": "action",
+                "name": "detect_waste_bin",
+                "action": "detect",
+                "params": {
+                  "object": "waste"
+                }
+              },
+              {
+                "type": "action",
+                "name": "pick_waste_bin",
+                "action": "pick",
+                "params": {
+                  "object": "waste"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "action",
+        "name": "navigate_to_dumpster_disposal",
+        "action": "navigate",
+        "params": {
+          "target_location": "dumpster_disposal"
+        }
+      },
+      {
+        "type": "action",
+        "name": "place_waste",
+        "action": "place"
+      }
+    ]
+  }
+}

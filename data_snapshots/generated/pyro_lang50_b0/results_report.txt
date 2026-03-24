@@ -1,0 +1,68 @@
+Batch: pyro_lang50_b0
+Suites: pyrobosim_language50
+Environments: pyrobosim
+Tasks: 50
+
+Overall
+  Success rate: 0.84
+  Goal satisfied rate: 0.84
+  Valid rate: 1.0
+  Grounded rate: 1.0
+  Params rate: 1.0
+  Struct comp rate: 1.0
+  Avg tick count: 27.4
+  Avg runtime ms: 3112.0
+
+Execution Status Counts
+  FAILURE: 8
+  SUCCESS: 42
+
+Failure Cause Counts
+  runtime_failure: 8
+
+By Archetype
+  pick_and_place
+    count: 10
+    success_rate: 0.2
+    struct_comp_rate: 1.0
+    avg_tick_count: 22.4
+    avg_runtime_ms: 2422.3
+    failure_runtime_failure: 8
+  pick_and_return
+    count: 10
+    success_rate: 1.0
+    struct_comp_rate: 1.0
+    avg_tick_count: 35.8
+    avg_runtime_ms: 4237.1
+    failure_breakdown: none
+  search_and_place
+    count: 10
+    success_rate: 1.0
+    struct_comp_rate: 1.0
+    avg_tick_count: 37.2
+    avg_runtime_ms: 4338.2
+    failure_breakdown: none
+  selector_search
+    count: 10
+    success_rate: 1.0
+    struct_comp_rate: 1.0
+    avg_tick_count: 17.2
+    avg_runtime_ms: 1858.2
+    failure_breakdown: none
+  sequential_pick
+    count: 10
+    success_rate: 1.0
+    struct_comp_rate: 1.0
+    avg_tick_count: 24.4
+    avg_runtime_ms: 2704.1
+    failure_breakdown: none
+
+Remaining Failures
+  lang21_task21_place_bread_table | pick_and_place | FAILURE | runtime_failure | Execution did not finish successfully in the simulator/control server.
+  lang22_task22_place_snacks_table | pick_and_place | FAILURE | runtime_failure | Execution did not finish successfully in the simulator/control server.
+  lang23_task23_place_soda_pantry | pick_and_place | FAILURE | runtime_failure | Execution did not finish successfully in the simulator/control server.
+  lang24_task24_place_butter_desk | pick_and_place | FAILURE | runtime_failure | Execution did not finish successfully in the simulator/control server.
+  lang25_task25_place_bread_fridge | pick_and_place | FAILURE | runtime_failure | Execution did not finish successfully in the simulator/control server.
+  lang26_task26_place_snacks_desk | pick_and_place | FAILURE | runtime_failure | Execution did not finish successfully in the simulator/control server.
+  lang27_task27_place_soda_table | pick_and_place | FAILURE | runtime_failure | Execution did not finish successfully in the simulator/control server.
+  lang28_task28_place_butter_pantry | pick_and_place | FAILURE | runtime_failure | Execution did not finish successfully in the simulator/control server.

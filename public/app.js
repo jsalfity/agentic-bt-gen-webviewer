@@ -107,15 +107,34 @@ function tile(label, value, description = '') {
   `;
 }
 
+function listTile(label, items, note = '') {
+  return `
+    <div class="stat-tile stat-tile--list">
+      <div class="stat-k">${label}</div>
+      <div class="stat-list">
+        ${items.map((item) => `<span class="stat-pill">${escapeHtml(item)}</span>`).join('')}
+      </div>
+      ${note ? `<div class="stat-note">${escapeHtml(note)}</div>` : ''}
+    </div>
+  `;
+}
+
 function badge(label, tone = '') {
   return `<span class="badge ${tone}">${label}</span>`;
 }
 
 function methodColor(method) {
-  if (method === 'M-Core') return '#0b6e4f';
-  if (method === 'B1') return '#b6502d';
-  if (method === 'B0') return '#5a6472';
+  if (method === 'M-Core') return '#117a65';
+  if (method === 'B1') return '#d17b28';
+  if (method === 'B0') return '#4f6d8a';
   return '#8a8378';
+}
+
+function methodStrokeColor(method) {
+  if (method === 'M-Core') return '#0a5a4a';
+  if (method === 'B1') return '#9f5516';
+  if (method === 'B0') return '#35506b';
+  return '#6f695f';
 }
 
 function humanizeValue(value) {
@@ -182,16 +201,14 @@ function tasksForCurrentBatch() {
 
 function renderHeroStats() {
   const totalTasks = Object.values(state.catalog.tasks_by_batch || {}).reduce((sum, tasks) => sum + tasks.length, 0);
-  const successRates = state.batches.map((batch) => batch.summary?.success_rate).filter((value) => typeof value === 'number');
-  const meanSuccess = successRates.length
-    ? `${Math.round((successRates.reduce((a, b) => a + b, 0) / successRates.length) * 100)}%`
-    : 'n/a';
+  const methods = state.catalog.methods || [];
+  const suites = Object.values(state.catalog.suites || {}).map((suite) => suite.label);
 
   els.heroStats.innerHTML = [
-    tile('Batches', state.batches.length),
-    tile('Tasks', totalTasks),
-    tile('Suites', Object.keys(state.catalog.suites || {}).length),
-    tile('Mean success', meanSuccess),
+    listTile('Methods', methods, `${methods.length} synthesis settings in the current study`),
+    listTile('Task Suites', suites, `${suites.length} benchmark suites in the current study`),
+    tile('Batches', state.batches.length, 'method × suite runs in the catalog'),
+    tile('Number of Tasks', totalTasks, 'total prompts across all visible batches'),
   ].join('');
 }
 
@@ -369,7 +386,10 @@ function renderBatchComparison(activeBatch) {
       bars.push(`
         <g>
           <rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barWidth.toFixed(1)}" height="${barHeight.toFixed(1)}" rx="4" ry="4"
-            fill="${methodColor(batch.method)}" opacity="${batch.name === activeBatch.name ? '1' : '0.72'}"></rect>
+            fill="${methodColor(batch.method)}"
+            opacity="${batch.name === activeBatch.name ? '1' : '0.82'}"
+            stroke="${batch.name === activeBatch.name ? methodStrokeColor(batch.method) : 'rgba(29,27,24,0.08)'}"
+            stroke-width="${batch.name === activeBatch.name ? '2.4' : '1'}"></rect>
           <text x="${(x + barWidth / 2).toFixed(1)}" y="${(y - 5).toFixed(1)}" text-anchor="middle"
             font-family="Avenir Next, Segoe UI, sans-serif" font-size="9" fill="#5a544b">${Math.round(clamped * 100)}</text>
         </g>

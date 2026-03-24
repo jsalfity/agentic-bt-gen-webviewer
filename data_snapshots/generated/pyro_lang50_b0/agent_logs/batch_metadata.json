@@ -1,0 +1,10 @@
+{
+  "method": "b0",
+  "model": "sonnet",
+  "prompt_file": "/Users/jonathansalfity/Documents/dev/bt-workspace-claude/bt-eval-harness/task_suites/client_prompts/tasks_pyrobosim_language50.txt",
+  "tasks_file": "/Users/jonathansalfity/Documents/dev/bt-workspace-claude/bt-eval-harness/task_suites/task_spec/tasks_pyrobosim_language50.yaml",
+  "control_url": "http://localhost:8080",
+  "use_mcp": false,
+  "created_at": "2026-03-22T20:01:40.563947Z",
+  "prompt_count": 50
+}

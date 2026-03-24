@@ -1,0 +1,39 @@
+{
+  "batch_dir": "/Users/jonathansalfity/Documents/dev/bt-workspace-claude/bt-eval-harness/generated/pyro_lang50_b0",
+  "method": "b0",
+  "model": "sonnet",
+  "created_at": "2026-03-22T20:01:40.563619Z",
+  "collection_mode": "claude_batch_session",
+  "note": "Record batch-level token usage manually from the coding-agent session and save it beside this batch.",
+  "status": "recorded_from_claude_output",
+  "fields_to_fill": [
+    "input_tokens",
+    "output_tokens",
+    "total_tokens",
+    "session_id",
+    "session_log_path"
+  ],
+  "session_id": "9209239f-7e89-4c9c-8c7b-cf3e893d032e",
+  "session_log_path": "/Users/jonathansalfity/Documents/dev/bt-workspace-claude/bt-eval-harness/generated/pyro_lang50_b0/agent_logs/claude_stdout.json",
+  "input_tokens": 167,
+  "output_tokens": 29992,
+  "total_tokens": 30159,
+  "raw_usage": {
+    "input_tokens": 167,
+    "cache_creation_input_tokens": 48741,
+    "cache_read_input_tokens": 665764,
+    "output_tokens": 29992,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 48741
+    }
+  },
+  "result_subtype": "success",
+  "is_error": false,
+  "result_summary": "## Summary\n\nBatch generation job completed successfully!\n\n**Results:**\n- **50 BT JSONs created** in `generated/pyro_lang50_b0/jsons/`\n  - Tasks 1-6: Simple sequential pick tasks\n  - Tasks 7-10: Sequential pick with navigation to destination\n  - Tasks 11-20: Selector-based search patterns across two locations\n  - Tasks 21-30: Pick and place tasks with proper open/close sequencing\n  - Tasks 31-40: Search and place patterns using selector + delivery\n  - Tasks 41-50: Search and return patterns (pick + navigate while holding)\n\n- **50 submissions logged** to `generated/pyro_lang50_b0/submissions.jsonl`\n  - Each entry includes: submission_id, timestamp, generated path, and task_prompt\n\nAll BTs follow the schema requirements:\n- Memory-enabled sequences/selectors for action nodes\n- Proper open/close actions for pantry and fridge locations\n- Detect-before-pick pattern enforcement\n- Correct selector patterns for search tasks"
+}

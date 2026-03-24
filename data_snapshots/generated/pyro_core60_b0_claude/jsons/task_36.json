@@ -1,0 +1,97 @@
+{
+  "root": {
+    "type": "sequence",
+    "memory": true,
+    "children": [
+      {
+        "type": "selector",
+        "memory": true,
+        "children": [
+          {
+            "type": "sequence",
+            "memory": true,
+            "children": [
+              {
+                "type": "action",
+                "name": "navigate_to_fridge",
+                "action": "navigate",
+                "params": {
+                  "target_location": "fridge"
+                }
+              },
+              {
+                "type": "action",
+                "name": "open_fridge",
+                "action": "open"
+              },
+              {
+                "type": "action",
+                "name": "detect_soda_at_fridge",
+                "action": "detect",
+                "params": {
+                  "object": "soda"
+                }
+              },
+              {
+                "type": "action",
+                "name": "pick_soda_from_fridge",
+                "action": "pick",
+                "params": {
+                  "object": "soda"
+                }
+              }
+            ]
+          },
+          {
+            "type": "sequence",
+            "memory": true,
+            "children": [
+              {
+                "type": "action",
+                "name": "navigate_to_pantry",
+                "action": "navigate",
+                "params": {
+                  "target_location": "pantry"
+                }
+              },
+              {
+                "type": "action",
+                "name": "open_pantry",
+                "action": "open"
+              },
+              {
+                "type": "action",
+                "name": "detect_soda_at_pantry",
+                "action": "detect",
+                "params": {
+                  "object": "soda"
+                }
+              },
+              {
+                "type": "action",
+                "name": "pick_soda_from_pantry",
+                "action": "pick",
+                "params": {
+                  "object": "soda"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "action",
+        "name": "navigate_to_table",
+        "action": "navigate",
+        "params": {
+          "target_location": "table_tabletop"
+        }
+      },
+      {
+        "type": "action",
+        "name": "place_soda",
+        "action": "place"
+      }
+    ]
+  }
+}

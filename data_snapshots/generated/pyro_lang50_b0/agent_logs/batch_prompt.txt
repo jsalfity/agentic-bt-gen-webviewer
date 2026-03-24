@@ -1,0 +1,395 @@
+You are running a batch behavior-tree generation job.
+
+        Use the inline reference materials below: the skill library, the BT schema, and the rootstocks.
+
+For each task prompt below:
+- generate exactly one BT JSON
+- write it to `/Users/jonathansalfity/Documents/dev/bt-workspace-claude/bt-eval-harness/generated/pyro_lang50_b0/jsons` using a stable filename like `task_01.json`
+- append one JSON line to `/Users/jonathansalfity/Documents/dev/bt-workspace-claude/bt-eval-harness/generated/pyro_lang50_b0/submissions.jsonl` with fields:
+  - `submission_id`
+  - `timestamp`
+  - `generated` (relative path such as `jsons/task_01.json`)
+  - `task_prompt`
+
+Use the task prompt text verbatim in the `task_prompt` field.
+
+        Requirements:
+        - Work through the prompts in order.
+        - Produce exactly one BT per prompt.
+        - Ensure the BT JSON is valid before submission.
+        - Choose stable output names derived from the task number.
+        - After processing all prompts, return a concise summary listing how many BTs were created.
+
+        Batch source file:
+        /Users/jonathansalfity/Documents/dev/bt-workspace-claude/bt-eval-harness/task_suites/task_spec/tasks_pyrobosim_language50.yaml
+
+        Inline skill library reference:
+        ```yaml
+        skills:
+  - name: navigate
+    description: Plan and follow a path to a target location or pose. Use location names from the world vocabulary (e.g., pantry, fridge, table). The robot will automatically navigate to the appropriate position for interacting with objects at that location.
+    params:
+      target_location:
+        type: string
+        source: [literal, blackboard]
+        required: false
+      pose:
+        type: pose
+        source: [literal, blackboard]
+        required: false
+      path:
+        type: path
+        source: [literal, blackboard]
+        required: false
+    outputs: [status, message, last_nav_result, battery_level]
+
+  - name: pick
+    description: Pick up an object at the current location. The robot must be at a location where the object is present. Use object names or categories from the world vocabulary. CONSTRAINT - Single-arm robot can only hold one object at a time; cannot pick while already holding something.
+    params:
+      object:
+        type: string
+        source: [literal, blackboard]
+        required: false
+      pose:
+        type: pose
+        source: [literal, blackboard]
+        required: false
+    outputs: [status, message, battery_level]
+
+  - name: place
+    description: Place the currently held object at the current location. The robot must be at a location where objects can be placed (navigate to a location first).
+    params:
+      pose:
+        type: pose
+        source: [literal, blackboard]
+        required: false
+    outputs: [status, message, battery_level]
+
+  - name: detect
+    description: Detect objects at the current location. The robot must be at a location (navigate there first). If the location can be closed (e.g., pantry, fridge), it must be opened first using the open action. The object parameter can be a specific object name or category from the world vocabulary.
+    params:
+      object:
+        type: string
+        source: [literal, blackboard]
+        required: false
+    outputs: [status, message, detected_objects, battery_level]
+
+  - name: open
+    description: Open the current location or target location if provided. Certain locations like pantry and fridge must be opened before you can detect or pick objects inside them. CONSTRAINT - Cannot open while holding an object (single-arm robot).
+    params:
+      target_location:
+        type: string
+        source: [literal, blackboard]
+        required: false
+    outputs: [status, message, battery_level]
+
+  - name: close
+    description: Close the current location or target location if provided. CRITICAL CONSTRAINT - Cannot close while holding an object (single-arm robot). Only close locations when NOT holding anything. If you pick an object from a location, do NOT close it until after you place the object elsewhere.
+    params:
+      target_location:
+        type: string
+        source: [literal, blackboard]
+        required: false
+    outputs: [status, message, battery_level]
+        ```
+
+        Inline BT schema reference:
+        ```yaml
+        schema_version: "1.0"
+description: "PyRoboSim behavior tree JSON format."
+notes:
+  - "Top-level BT JSON must include a `root` object."
+  - "Memory rule: set memory=true on any sequence/selector that contains action nodes, so completed actions are not re-run on subsequent ticks."
+  - "Use memory=false only for purely reactive condition/sensor chains that should re-evaluate from the start every tick."
+node_types: [sequence, selector, parallel, decorator, condition, action]
+
+action_node:
+  type: action
+  fields:
+    name: string
+    action: string
+    params:
+      param_format:
+        literal: any
+        blackboard:
+          source: blackboard
+          key: string
+          default: any
+        pose:
+          pose:
+            x: float
+            y: float
+            yaw: float
+        path:
+          path:
+            - x: float
+              y: float
+              yaw: float
+    outputs:
+      status: blackboard_key
+      message: blackboard_key
+      result: blackboard_key
+      detected_objects: blackboard_key
+      battery_level: blackboard_key
+      last_nav_result: blackboard_key
+
+condition_node:
+  type: condition
+  fields:
+    name: string
+    key: blackboard_key
+    operator: ["==", "!=", ">", ">=", "<", "<=", in, contains, truthy]
+    value: any
+
+composite_nodes:
+  sequence:
+    children: list
+    memory: bool
+  selector:
+    children: list
+    memory: bool
+  parallel:
+    children: list
+    policy: [success_on_all, success_on_one]
+
+decorator_node:
+  type: decorator
+  fields:
+    decorator: [inverter, retry]
+    num_failures: int
+    child: node
+
+blackboard:
+  initial: dict
+        ```
+
+        Inline rootstocks reference:
+        ```yaml
+        rootstocks:
+  - name: detect_pick
+    description: Canonical detect-gated manipulation pattern for direct pick tasks.
+    when_to_use: Use when the task is to go to one location, verify the target object, and pick it.
+    slots:
+      object_query: Object name or category to detect and pick.
+      source_location: Location or object spawn to navigate to before detect and pick.
+      open_before_detect: Set true when the source location can be closed, such as pantry or fridge.
+    anti_pattern: Do not pick before detect succeeds.
+    template:
+      root:
+        type: sequence
+        memory: true
+        children:
+          - type: action
+            name: navigate_to_source
+            action: navigate
+            params:
+              target_location: "{source_location}"
+          - type: action
+            name: open_source
+            action: open
+            enabled_if:
+              slot: open_before_detect
+          - type: action
+            name: detect_target
+            action: detect
+            params:
+              object: "{object_query}"
+          - type: action
+            name: pick_target
+            action: pick
+            params:
+              object: "{object_query}"
+
+  - name: search_pick_selector
+    description: Two-branch selector search pattern with a guarded detect-and-pick branch at each location.
+    when_to_use: Use when the task says to search one location, then fall back to a second location, and pick the object if found.
+    slots:
+      object_query: Object name or category to detect and pick.
+      primary_location: First search location.
+      fallback_location: Second search location.
+      primary_open_before_detect: Set true when the primary location can be closed.
+      fallback_open_before_detect: Set true when the fallback location can be closed.
+    anti_pattern: Do not make the fallback branch a blind navigate-and-pick sequence.
+    template:
+      root:
+        type: selector
+        memory: true
+        children:
+          - type: sequence
+            memory: true
+            children:
+              - type: action
+                name: navigate_primary
+                action: navigate
+                params:
+                  target_location: "{primary_location}"
+              - type: action
+                name: open_primary
+                action: open
+                enabled_if:
+                  slot: primary_open_before_detect
+              - type: action
+                name: detect_primary
+                action: detect
+                params:
+                  object: "{object_query}"
+              - type: action
+                name: pick_primary
+                action: pick
+                params:
+                  object: "{object_query}"
+          - type: sequence
+            memory: true
+            children:
+              - type: action
+                name: navigate_fallback
+                action: navigate
+                params:
+                  target_location: "{fallback_location}"
+              - type: action
+                name: open_fallback
+                action: open
+                enabled_if:
+                  slot: fallback_open_before_detect
+              - type: action
+                name: detect_fallback
+                action: detect
+                params:
+                  object: "{object_query}"
+              - type: action
+                name: pick_fallback
+                action: pick
+                params:
+                  object: "{object_query}"
+
+  - name: search_pick_deliver
+    description: Search with selector fallback, then continue to a delivery step such as place or return.
+    when_to_use: Use when the task says to search across candidate locations and then either place the object somewhere or return to a destination while holding it.
+    slots:
+      object_query: Object name or category to detect and pick.
+      primary_location: First search location.
+      fallback_location: Second search location.
+      destination_location: Delivery destination.
+      delivery_mode: One of place or return.
+      primary_open_before_detect: Set true when the primary location can be closed.
+      fallback_open_before_detect: Set true when the fallback location can be closed.
+    anti_pattern: Do not put delivery actions inside only one selector branch.
+    template:
+      root:
+        type: sequence
+        memory: true
+        children:
+          - type: selector
+            memory: true
+            children:
+              - type: sequence
+                memory: true
+                children:
+                  - type: action
+                    name: navigate_primary
+                    action: navigate
+                    params:
+                      target_location: "{primary_location}"
+                  - type: action
+                    name: open_primary
+                    action: open
+                    enabled_if:
+                      slot: primary_open_before_detect
+                  - type: action
+                    name: detect_primary
+                    action: detect
+                    params:
+                      object: "{object_query}"
+                  - type: action
+                    name: pick_primary
+                    action: pick
+                    params:
+                      object: "{object_query}"
+              - type: sequence
+                memory: true
+                children:
+                  - type: action
+                    name: navigate_fallback
+                    action: navigate
+                    params:
+                      target_location: "{fallback_location}"
+                  - type: action
+                    name: open_fallback
+                    action: open
+                    enabled_if:
+                      slot: fallback_open_before_detect
+                  - type: action
+                    name: detect_fallback
+                    action: detect
+                    params:
+                      object: "{object_query}"
+                  - type: action
+                    name: pick_fallback
+                    action: pick
+                    params:
+                      object: "{object_query}"
+          - type: action
+            name: navigate_destination
+            action: navigate
+            params:
+              target_location: "{destination_location}"
+          - type: action
+            name: place_at_destination
+            action: place
+            enabled_if:
+              slot_equals:
+                slot: delivery_mode
+                value: place
+        ```
+
+        Task prompts:
+        1. Head to pantry, detect bread, and pick it up.
+2. Please navigate to pantry, detect snacks, and pick it up.
+3. Head to fridge, detect soda, and pick it up.
+4. Please navigate to fridge, detect butter, and pick it up.
+5. Head to desk_desktop, detect waste, and pick it up.
+6. Please navigate to bin_disposal, detect waste, and pick it up.
+7. Head to pantry, detect bread, pick it up, then return to dining.
+8. Head to fridge, detect soda, pick it up, then go to office.
+9. Head to pantry, detect snacks, pick it up, then go to kitchen.
+10. Head to fridge, detect butter, pick it up, then go to closet.
+11. Check pantry, then fridge for bread. If found, pick it up.
+12. Check fridge, then pantry for bread. If found, pick it up.
+13. Check pantry, then fridge for snacks. If found, pick it up.
+14. Check fridge, then pantry for soda. If found, pick it up.
+15. Check fridge, then pantry for butter. If found, pick it up.
+16. Check desk_desktop, then bin_disposal for waste. If found, pick it up.
+17. Check bin_disposal, then desk_desktop for waste. If found, pick it up.
+18. Check pantry, then desk_desktop for snacks. If found, pick it up.
+19. Check fridge, then desk_desktop for soda. If found, pick it up.
+20. Check pantry, then table_tabletop for bread. If found, pick it up.
+21. Pick bread from pantry and set it on table_tabletop.
+22. Pick snacks from pantry and set it on table_tabletop.
+23. Pick soda from fridge and set it at pantry.
+24. Pick butter from fridge and set it on desk_desktop.
+25. Pick bread from pantry and set it at fridge.
+26. Pick snacks from pantry and set it on desk_desktop.
+27. Pick soda from fridge and set it on table_tabletop.
+28. Pick butter from fridge and set it at pantry.
+29. Pick waste from desk_desktop and set it at dumpster_disposal.
+30. Pick waste from bin_disposal and set it at dumpster_disposal.
+31. Search pantry, and only if needed then fridge for bread. If found, place it on table_tabletop.
+32. Search fridge, and only if needed then pantry for bread. If found, place it on table_tabletop.
+33. Search pantry, and only if needed then desk_desktop for snacks. If found, place it on table_tabletop.
+34. Search fridge, and only if needed then pantry for soda. If found, place it at pantry.
+35. Search fridge, and only if needed then pantry for butter. If found, place it on desk_desktop.
+36. Search fridge, and only if needed then pantry for soda. If found, place it on table_tabletop.
+37. Search pantry, and only if needed then desk_desktop for bread. If found, place it on desk_desktop.
+38. Search pantry, and only if needed then fridge for snacks. If found, place it on desk_desktop.
+39. Search desk_desktop, and only if needed then bin_disposal for waste. If found, place it at dumpster_disposal.
+40. Search bin_disposal, and only if needed then desk_desktop for waste. If found, place it at dumpster_disposal.
+41. Return to dining while holding bread, but only after you have first checked table_tabletop and then pantry, found it, and picked it up.
+42. Return to dining while holding snacks, but only after you have first checked table_tabletop and then pantry, found them, and picked them up.
+43. Return to dining while holding soda, but only after you have first checked table_tabletop and then fridge, found it, and picked it up.
+44. Return to dining while holding butter, but only after you have first checked table_tabletop and then fridge, found it, and picked it up.
+45. Return to dining while holding waste, but only after you have first checked bin_disposal and then desk_desktop, found it, and picked it up.
+46. Return to dining while holding bread, but only after you have found and picked it up.
+47. Return to dining while holding snacks, but only after you have found and picked it up.
+48. Return to dining while holding soda, but only after you have found and picked it up.
+49. Return to dining while holding butter, but only after you have found and picked it up.
+50. Return to dining while holding waste, but only after you have found and picked it up.

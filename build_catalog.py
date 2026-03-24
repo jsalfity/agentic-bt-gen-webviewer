@@ -696,13 +696,18 @@ def build_catalog() -> dict[str, Any]:
             "task_count": len(suite_meta["tasks"]),
         }
 
+    methods_present = sorted(
+        {batch["method"] for batch in batches},
+        key=lambda method: METHOD_ORDER.get(method, 99),
+    )
+
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "project": {
             "title": "Agentic BT Generation",
             "subtitle": "Inspect PyRoboSim evaluation results and run selected behavior trees live.",
         },
-        "methods": ["M-Core", "B1", "B0", "Other"],
+        "methods": methods_present,
         "suites": suite_index,
         "paper_tables": paper_tables,
         "rootstocks": rootstocks,

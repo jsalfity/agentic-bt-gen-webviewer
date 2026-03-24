@@ -1,0 +1,39 @@
+{
+  "batch_dir": "/Users/jonathansalfity/Documents/dev/bt-workspace-claude/bt-eval-harness/generated/pyro_core60_b0_claude",
+  "method": "b0",
+  "model": "sonnet",
+  "created_at": "2026-03-22T19:50:33.966545Z",
+  "collection_mode": "claude_batch_session",
+  "note": "Record batch-level token usage manually from the coding-agent session and save it beside this batch.",
+  "status": "recorded_from_claude_output",
+  "fields_to_fill": [
+    "input_tokens",
+    "output_tokens",
+    "total_tokens",
+    "session_id",
+    "session_log_path"
+  ],
+  "session_id": "66e9604c-db62-4ca3-a2cb-eaddf2ea9466",
+  "session_log_path": "/Users/jonathansalfity/Documents/dev/bt-workspace-claude/bt-eval-harness/generated/pyro_core60_b0_claude/agent_logs/claude_stdout.json",
+  "input_tokens": 225,
+  "output_tokens": 42279,
+  "total_tokens": 42504,
+  "raw_usage": {
+    "input_tokens": 225,
+    "cache_creation_input_tokens": 56307,
+    "cache_read_input_tokens": 992958,
+    "output_tokens": 42279,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 56307
+    }
+  },
+  "result_subtype": "success",
+  "is_error": false,
+  "result_summary": "## Batch Generation Complete\n\nSuccessfully generated **60 behavior trees** for the PyRoboSim core task suite.\n\n**Summary by task pattern:**\n\n- **Tasks 1-6**: Simple detect-and-pick patterns (6 BTs)\n- **Tasks 7-10**: Detect-pick-navigate patterns (4 BTs)\n- **Tasks 11-20**: Two-location search with selector fallback (10 BTs)\n- **Tasks 21-30**: Pick-and-place patterns (10 BTs)\n- **Tasks 31-40**: Search-and-place patterns with selector (10 BTs)\n- **Tasks 41-50**: Search-and-return patterns (10 BTs)\n- **Tasks 51-56**: Three-location search patterns (6 BTs)\n- **Tasks 57-60**: Special open-detect-pick patterns (4 BTs)\n\n**Output locations:**\n- JSON files: `generated/pyro_core60_b0_claude/jsons/task_01.json` through `task_60.json`\n- Submissions log: `generated/pyro_core60_b0_claude/submissions.jsonl` (60 entries)\n\nAll BTs follow the provided schema with proper memory management, skill usage, and constraint handling (e.g., opening closable locations like pantry/fridge before detect, respecting single-arm robot constraints)."
+}
